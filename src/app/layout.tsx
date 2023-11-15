@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import UserBadge from "@/components/UserBadge";
+
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,7 +33,7 @@ export default function RootLayout({
             },
           }}
         />
-        <main className="min-h-screen">
+        <main className="h-screen">
           <div className="navbar bg-base-100">
             <div className="flex-1 pl-3 text-lg font-bold">
               <a href="/">Manage Guests</a>
@@ -44,10 +46,18 @@ export default function RootLayout({
                 <li>
                   <a href="/add-guests">Add Guests</a>
                 </li>
+                <li className="mr-1">
+                  <UserBadge />
+                </li>
               </ul>
             </div>
           </div>
-          {children}
+          <div
+            className="overflow-y-auto"
+            style={{ height: "calc(100vh - 68px)" }}
+          >
+            {children}
+          </div>
         </main>
       </body>
     </html>

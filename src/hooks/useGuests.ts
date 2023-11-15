@@ -1,4 +1,4 @@
-import { useGuestStore } from "@/store/store";
+import { useGuestStore } from "@/store/guest";
 import { useEffect } from "react";
 
 const useGuests = () => {

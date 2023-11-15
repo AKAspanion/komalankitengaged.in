@@ -1,8 +1,9 @@
 "use client";
 
+import Authorized from "@/components/Authorized";
 import Hydrated from "@/components/Hydrated";
 import { GuestSchema } from "@/schema/guest";
-import { useGuestStore } from "@/store/store";
+import { useGuestStore } from "@/store/guest";
 import { getErrorMessage } from "@/utils/error";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
@@ -41,8 +42,6 @@ function AddGuests() {
           : "0";
 
       const body = { name, room, phoneNo, peopleCount };
-
-      console.log(body);
 
       GuestSchema.parse(body);
 
@@ -115,8 +114,8 @@ function AddGuests() {
 
 export default function Page() {
   return (
-    <Hydrated>
+    <Authorized>
       <AddGuests />
-    </Hydrated>
+    </Authorized>
   );
 }

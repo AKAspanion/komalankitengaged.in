@@ -1,9 +1,9 @@
 "use client";
 
+import Authorized from "@/components/Authorized";
 import Hydrated from "@/components/Hydrated";
-import { useGuestStore } from "@/store/store";
+import { useGuestStore } from "@/store/guest";
 
-// 01
 
 function Rooms() {
   const rooms = useGuestStore((state) => state.totalRooms);
@@ -13,8 +13,8 @@ function Rooms() {
 
 export default function Page() {
   return (
-    <Hydrated>
+    <Authorized>
       <Rooms />
-    </Hydrated>
+    </Authorized>
   );
 }

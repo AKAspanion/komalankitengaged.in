@@ -1,9 +1,10 @@
 "use client";
 
+import Authorized from "@/components/Authorized";
 import ContentLoader from "@/components/ContentLoader";
 import Hydrated from "@/components/Hydrated";
 import useGuests from "@/hooks/useGuests";
-import { useGuestStore } from "@/store/store";
+import { useGuestStore } from "@/store/guest";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
 function Home() {
@@ -61,7 +62,9 @@ function Home() {
 export default function Page() {
   return (
     <Hydrated>
-      <Home />
+      <Authorized>
+        <Home />
+      </Authorized>
     </Hydrated>
   );
 }
