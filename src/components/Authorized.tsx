@@ -16,9 +16,7 @@ const HyderatedAuthorized: FC<AuthorizedProps> = ({ children }) => {
     <div className="w-full h-full text-center flex justify-center items-center">
       <div>
         <h2 className="text-xl font-semibold">Unauthorized</h2>
-        <div className="text-gray-400">
-            {"You don't have permission to access this page. Pleae login to continue."}
-        </div>
+        <div className="text-gray-400">Pleae login to continue</div>
         <div className="pb-16"></div>
       </div>
     </div>

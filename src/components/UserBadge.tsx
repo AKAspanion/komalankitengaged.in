@@ -11,16 +11,16 @@ const HyderatedUserBadge: FC<UserBadgeProps> = ({}) => {
   const user = useUserStore((s) => s.user);
 
   return (
-    <div className="flex gap-2">
-      {user?.email ? (
-        <a href="/profile">
+    <a href={user?.email ? "/profile" : "/login"}>
+      <div className="flex gap-2">
+        {user?.email ? (
           <div className="text-sm text-gray-400">{user?.email || ""}</div>
-        </a>
-      ) : (
-        <a href="/login">Login</a>
-      )}
-      <UserCircleIcon className="w-5 h-5" />
-    </div>
+        ) : (
+          <div>Login</div>
+        )}
+        <UserCircleIcon className="w-5 h-5" />
+      </div>
+    </a>
   );
 };
 

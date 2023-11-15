@@ -27,9 +27,13 @@ export async function POST(_req: Request) {
       );
     }
 
-    const token = Buffer.from(`${data?.name}:${data?.password}`).toString(
-      "base64"
-    );
+    const date = new Date();
+
+    date.setMinutes(date.getMinutes() + 5);
+
+    const token = Buffer.from(
+      `${data?.email}:${date.getTime()}:${data?.role}`
+    ).toString("base64");
     return NextResponse.json(
       {
         data: {

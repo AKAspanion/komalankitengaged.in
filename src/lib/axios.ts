@@ -6,11 +6,9 @@ const axiosInstance = axios.create({});
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Modify the request config here (add headers, authentication tokens)
     const accessToken = ls.get<{ state: UserStore }>("user-storage")?.state
       ?.token;
 
-    // If token is present add it to request's Authorization Header
     if (accessToken) {
       if (config.headers)
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -18,9 +16,20 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    // Handle request errors here
-
     return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  (config) => {
+    return config;
+  },
+  (error) => {
+    const { status } = error?.response || {};
+    if (status === 401) {
+      ls.set("user-storage", JSON.stringify({ state: {} }));
+      window.location.reload();
+    }
   }
 );
 

@@ -1,4 +1,5 @@
 import { getDB } from "@/db/mongo";
+import { isAuthenticated } from "@/lib/auth";
 import { Guest, GuestSchema } from "@/schema/guest";
 import { getErrorMessage } from "@/utils/error";
 import { NextApiResponse, NextApiRequest } from "next";
@@ -7,6 +8,10 @@ export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse<AppAPIRespose<Guest[] | Guest | ResponseMessage>>
 ) {
+  if (!(await isAuthenticated(_req))) {
+    return res.status(401).json({ data: { message: `Unauthorized` } });
+  }
+
   switch (_req.method) {
     case "POST": {
       try {

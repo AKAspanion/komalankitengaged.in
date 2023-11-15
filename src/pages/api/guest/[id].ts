@@ -1,4 +1,5 @@
 import { getDB } from "@/db/mongo";
+import { isAuthenticated } from "@/lib/auth";
 import { Guest } from "@/schema/guest";
 import { ObjectId } from "mongodb";
 import { NextApiResponse, NextApiRequest } from "next";
@@ -12,15 +13,18 @@ export default async function handler(
   } = _req;
   const query = { _id: new ObjectId(id.toString()) };
 
+  if (!(await isAuthenticated(_req))) {
+    return res.status(401).json({ data: { message: `Unauthorized` } });
+  }
   switch (_req.method) {
     case "GET": {
       return getGuestByID(_req)
         .then((guest) => {
           return guest
             ? res.status(200).json({ data: guest })
-            : res
-                .status(404)
-                .json({ data: { message: `Guest with id: ${id} not found.` } });
+            : res.status(404).json({
+                data: { message: `Guest with id: ${id} not found.` },
+              });
         })
         .catch((error) => {
           return res.status(500).json({

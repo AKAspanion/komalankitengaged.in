@@ -28,7 +28,6 @@ export const useUserStore = create(
               email,
               password,
             });
-            console.log(data);
             set(() => ({
               loginLoading: false,
               user: data?.data?.user,
