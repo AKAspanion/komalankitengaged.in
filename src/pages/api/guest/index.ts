@@ -15,7 +15,9 @@ export default async function handler(
 
         GuestSchema.parse(bodyObject);
 
-        let newGuest = await db.collection("guests").insertOne(bodyObject);
+        let newGuest = await db
+          .collection("guests")
+          .insertOne({ ...bodyObject, createdAt: new Date(Date.now()) });
 
         return res.status(200).json({
           data: { ...bodyObject, _id: newGuest.insertedId.toString() },
@@ -28,7 +30,11 @@ export default async function handler(
     }
     case "GET": {
       const db = await getDB("guests");
-      const guests = await db.collection("guests").find<Guest>({}).toArray();
+      const guests = await db
+        .collection("guests")
+        .find<Guest>({})
+        .sort({ createdAt: -1 })
+        .toArray();
       return res.status(200).json({ data: guests });
     }
     default: {

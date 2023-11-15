@@ -3,16 +3,20 @@
 import Hydrated from "@/components/Hydrated";
 import { GuestSchema } from "@/schema/guest";
 import { useGuestStore } from "@/store/store";
+import { getErrorMessage } from "@/utils/error";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
+import toast from "react-hot-toast";
 
 function AddGuests() {
   const router = useRouter();
-  const addGuest = useGuestStore((state) => state.addGuest);
+  const setGuest = useGuestStore((state) => state.setGuest);
   const rooms = useGuestStore((state) => state.totalRooms);
+  const loading = useGuestStore((state) => state.setGuestLoading);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     try {
+      if (loading) return;
       event.preventDefault();
 
       const formData = new FormData(event.currentTarget);
@@ -26,15 +30,23 @@ function AddGuests() {
           ? (formData.get("peopleCount") || "0").toString()
           : "0"
       );
+      const phoneNo = parseInt(
+        typeof formData.get("phoneNo") === "string"
+          ? (formData.get("phoneNo") || "0").toString()
+          : "0"
+      );
 
-      const body = { name, peopleCount };
+      const body = { name, phoneNo, peopleCount };
 
       GuestSchema.parse(body);
 
-      addGuest(body);
+      await setGuest(body);
 
+      toast.success("Added succesfully");
       router.push("/");
-    } catch (error) {}
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   return (
@@ -63,12 +75,12 @@ function AddGuests() {
         <div className="form-control w-full max-w-xs">
           <input
             type="text"
-            name="phone"
+            name="phoneNo"
             placeholder="Phone number"
             className="input input-bordered w-full max-w-xs"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button disabled={loading} type="submit" className="btn btn-primary">
           Add
         </button>
       </form>
