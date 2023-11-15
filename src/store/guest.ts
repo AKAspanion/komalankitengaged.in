@@ -1,4 +1,4 @@
-import { Guest, GuestBody } from "@/schema/guest";
+import { CompleteGuest, GuestBody } from "@/schema/guest";
 import { create } from "zustand";
 import axiosInstance from "@/lib/axios";
 
@@ -15,9 +15,9 @@ export const useGuestStore = create<GuestStore>(
         const loading = get().guestsLoading;
         if (!loading) {
           set(() => ({ guestsLoading: true }));
-          const { data } = await axiosInstance.get<AppAPIRespose<Guest[]>>(
-            "/api/guest"
-          );
+          const { data } = await axiosInstance.get<
+            AppAPIRespose<CompleteGuest[]>
+          >("/api/guest");
 
           set(() => ({ guests: [...data.data], guestsLoading: false }));
           return true;
@@ -35,10 +35,7 @@ export const useGuestStore = create<GuestStore>(
         const loading = get().setGuestLoading;
         if (!loading) {
           set(() => ({ setGuestLoading: true }));
-          await axiosInstance.post<AppAPIRespose<Guest>>(
-            "/api/guest",
-            newGuest
-          );
+          await axiosInstance.post("/api/guest", newGuest);
 
           set(() => ({ setGuestLoading: false }));
           return true;
@@ -56,7 +53,7 @@ export const useGuestStore = create<GuestStore>(
           set((s) => ({
             removeGuestLoading: { ...s.removeGuestLoading, [id]: true },
           }));
-          await axiosInstance.delete<AppAPIRespose<Guest>>("/api/guest/" + id);
+          await axiosInstance.delete("/api/guest/" + id);
 
           set((s) => ({
             guests: (s.guests || []).filter((g) => g._id !== id),
@@ -80,7 +77,7 @@ export const useGuestStore = create<GuestStore>(
 );
 
 type GuestStore = {
-  guests?: Guest[];
+  guests?: CompleteGuest[];
   totalRooms: number;
   guestsLoading: boolean;
   setGuestLoading: boolean;

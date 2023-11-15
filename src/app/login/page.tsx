@@ -56,7 +56,7 @@ function Login() {
         </div>
         <button disabled={loading} className="btn btn-primary w-full">
           {loading ? (
-            <span className="loading loading-ring loading-sm"></span>
+            <span className="loading loading-spinner loading-sm"></span>
           ) : (
             "Login"
           )}

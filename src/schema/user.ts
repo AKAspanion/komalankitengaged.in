@@ -3,7 +3,7 @@ import { z } from "zod";
 export const UserSchema = z.object({
   email: z.coerce.string().email().min(5),
   name: z.coerce.string().min(5),
-  role: z.coerce.string().min(5),
+  role: z.enum(["ADMIN", "USER"]),
 });
 
 declare type UserDocument = { _id: string; createdAt: string };

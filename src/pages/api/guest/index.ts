@@ -2,6 +2,7 @@ import { getDB } from "@/db/mongo";
 import { isAuthenticated } from "@/lib/auth";
 import { Guest, GuestSchema } from "@/schema/guest";
 import { getErrorMessage } from "@/utils/error";
+import { ObjectId } from "mongodb";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(
@@ -20,9 +21,13 @@ export default async function handler(
 
         GuestSchema.parse(bodyObject);
 
+        const room = bodyObject?.room
+          ? new ObjectId(bodyObject?.room)
+          : undefined;
+
         let newGuest = await db
           .collection("guests")
-          .insertOne({ ...bodyObject, createdAt: new Date(Date.now()) });
+          .insertOne({ ...bodyObject, room, createdAt: new Date(Date.now()) });
 
         return res.status(200).json({
           data: { ...bodyObject, _id: newGuest.insertedId.toString() },
@@ -37,7 +42,18 @@ export default async function handler(
       const db = await getDB("guests");
       const guests = await db
         .collection("guests")
-        .find<Guest>({})
+        .aggregate<Guest>([
+          {
+            $lookup: {
+              from: "rooms",
+              localField: "room",
+              foreignField: "_id",
+              as: "roomData",
+            },
+          },
+          { $unwind: "$roomData" },
+          { $sort: { _id: 1 } },
+        ])
         .sort({ createdAt: -1 })
         .toArray();
       return res.status(200).json({ data: guests });

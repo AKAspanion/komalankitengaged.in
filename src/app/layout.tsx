@@ -35,7 +35,7 @@ export default function RootLayout({
         />
         <main className="h-screen">
           <div className="navbar bg-base-100">
-            <div className="flex-1 pl-3 text-lg font-bold">
+            <div className="flex-1 pl-2 text-lg font-bold">
               <a href="/">Manage Guests</a>
             </div>
             <div className="flex-none">
@@ -44,7 +44,7 @@ export default function RootLayout({
                   <a href="/rooms">Rooms</a>
                 </li>
                 <li>
-                  <a href="/add-guests">Add Guests</a>
+                  <a href="/guest-form">Add Guests</a>
                 </li>
                 <li className="mr-1">
                   <UserBadge />

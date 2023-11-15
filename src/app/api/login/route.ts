@@ -29,7 +29,7 @@ export async function POST(_req: Request) {
 
     const date = new Date();
 
-    date.setMinutes(date.getMinutes() + 5);
+    date.setHours(date.getHours() + 8);
 
     const token = Buffer.from(
       `${data?.email}:${date.getTime()}:${data?.role}`

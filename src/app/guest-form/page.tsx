@@ -1,19 +1,21 @@
 "use client";
 
 import Authorized from "@/components/Authorized";
-import Hydrated from "@/components/Hydrated";
+import useRooms from "@/hooks/useRooms";
 import { GuestSchema } from "@/schema/guest";
 import { useGuestStore } from "@/store/guest";
 import { getErrorMessage } from "@/utils/error";
-import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useEffect } from "react";
 import toast from "react-hot-toast";
 
 function AddGuests() {
   const router = useRouter();
+  const { rooms, loading: roomLoading } = useRooms();
   const setGuest = useGuestStore((state) => state.setGuest);
-  const rooms = useGuestStore((state) => state.totalRooms);
-  const loading = useGuestStore((state) => state.setGuestLoading);
+  const guestLoading = useGuestStore((state) => state.setGuestLoading);
+
+  const loading = roomLoading || guestLoading;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     try {
@@ -45,20 +47,30 @@ function AddGuests() {
 
       GuestSchema.parse(body);
 
-      await setGuest(body);
-
-      toast.success("Added succesfully");
-      router.push("/");
+      const success = await setGuest(body);
+      if (success) {
+        toast.success("Added succesfully");
+        router.push("/");
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
   }
 
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams) {
+      const type = searchParams.get("type");
+      console.log(type);
+    }
+  }, [searchParams]);
+
   return (
     <div className="p-4">
       <h1 className="font-medium text-xl pl-1 pb-1">Add a guest</h1>
       <div className="text-sm text-gray-400 pl-1 pb-4">
-        Total rooms present <p className="badge">{rooms}</p>
+        Total rooms present <p className="badge">{rooms?.length}</p>
       </div>
       <form className="flex w-full gap-4 flex-col" onSubmit={onSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
@@ -89,10 +101,15 @@ function AddGuests() {
           <div className="form-control">
             <select name="room" className="select select-bordered">
               <option disabled selected>
-                Room
+                Select Room
               </option>
-              <option>Han Solo</option>
-              <option>Greedo</option>
+              {rooms.map((r) => {
+                return (
+                  <option key={r._id} value={r._id}>
+                    {r.type} - {r.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -102,7 +119,7 @@ function AddGuests() {
           className="btn btn-primary w-fu"
         >
           {loading ? (
-            <span className="loading loading-ring loading-sm"></span>
+            <span className="loading loading-spinner loading-sm"></span>
           ) : (
             "Add"
           )}

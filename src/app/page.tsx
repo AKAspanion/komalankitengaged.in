@@ -25,7 +25,6 @@ function Home() {
               <th></th>
               <th>Name</th>
               <th>Phone No</th>
-              <th>People Count</th>
               <th>Room</th>
             </tr>
           </thead>
@@ -36,8 +35,11 @@ function Home() {
                   <th>{index + 1}</th>
                   <td>{guest.name}</td>
                   <td>{guest.phoneNo}</td>
-                  <td>{guest.peopleCount}</td>
-                  <td>{guest.room}</td>
+                  <td>
+                    <a href={`/rooms/${guest.room || ""}`}>
+                      {guest?.roomData?.type} - {guest?.roomData?.name}
+                    </a>
+                  </td>
                   <td>
                     <div className="flex items-center justify-center w-8">
                       {removeGuestLoading[guest._id] ? (
