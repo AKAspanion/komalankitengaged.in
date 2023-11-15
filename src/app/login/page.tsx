@@ -27,7 +27,7 @@ function Login() {
 
       if (success) {
         toast.success("Logged in succesfully");
-        router.push("/");
+        router.push("/home");
       }
     } catch (error) {
       toast.error(getErrorMessage(error));

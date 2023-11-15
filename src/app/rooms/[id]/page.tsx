@@ -21,11 +21,18 @@ function RoomDetails() {
   ) : (
     <div>
       <div className="px-4">
-        <h2 className="pt-4 pb-2 text-md font-semibold">Room Details</h2>
+        <div className="pb-1">
+          <h1 className="font-medium text-xl pl-1 pb-1">Room Details</h1>
+        </div>
         <div className="max-w-md">
           <RoomCard room={roomData} />
         </div>
-        <h2 className="pt-4 pb-2 text-md font-semibold">Guests in room</h2>
+        <div className="pb-1 mt-4">
+          <h1 className="font-medium text-xl pl-1 pb-1">Guests</h1>
+          <div className="text-sm text-gray-400 pl-1 pb-4">
+            List of guests in this room
+          </div>
+        </div>
       </div>
       {roomData?.guests?.length <= 0 ? (
         <div className="w-full p-8 text-center">No data available</div>
@@ -36,6 +43,7 @@ function RoomDetails() {
               <th></th>
               <th>Name</th>
               <th>Phone No</th>
+              <th>Guest Side</th>
             </tr>
           </thead>
           <tbody>
@@ -43,8 +51,9 @@ function RoomDetails() {
               return (
                 <tr key={guest._id} className="hover">
                   <th>{index + 1}</th>
-                  <td>{guest.name}</td>
-                  <td>{guest.phoneNo}</td>
+                  <td>{guest.name || "-"}</td>
+                  <td>{guest.phoneNo || "-"}</td>
+                  <td>{guest.side || "-"}</td>
                 </tr>
               );
             })}

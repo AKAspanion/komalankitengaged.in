@@ -2,7 +2,7 @@
 
 import Authorized from "@/components/Authorized";
 import useRooms from "@/hooks/useRooms";
-import { GuestSchema } from "@/schema/guest";
+import { GuestSchema, GuestSide } from "@/schema/guest";
 import { useGuestStore } from "@/store/guest";
 import { getErrorMessage } from "@/utils/error";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -28,11 +28,6 @@ function AddGuests() {
         typeof formData.get("name") === "string"
           ? (formData.get("name") || "").toString()
           : "0";
-      const peopleCount = parseInt(
-        typeof formData.get("peopleCount") === "string"
-          ? (formData.get("peopleCount") || "0").toString()
-          : "0"
-      );
       const phoneNo = parseInt(
         typeof formData.get("phoneNo") === "string"
           ? (formData.get("phoneNo") || "0").toString()
@@ -43,14 +38,20 @@ function AddGuests() {
           ? (formData.get("room") || "0").toString()
           : "0";
 
-      const body = { name, room, phoneNo, peopleCount };
+      const side = (
+        typeof formData.get("side") === "string"
+          ? (formData.get("side") || "0").toString()
+          : ""
+      ) as GuestSide;
+
+      const body = { name, room, side, phoneNo };
 
       GuestSchema.parse(body);
 
       const success = await setGuest(body);
       if (success) {
         toast.success("Added succesfully");
-        router.push("/");
+        router.push("/home");
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -67,7 +68,7 @@ function AddGuests() {
   }, [searchParams]);
 
   return (
-    <div className="p-4">
+    <div className="px-4 pb-4">
       <h1 className="font-medium text-xl pl-1 pb-1">Add a guest</h1>
       <div className="text-sm text-gray-400 pl-1 pb-4">
         Total rooms present <p className="badge">{rooms?.length}</p>
@@ -91,12 +92,18 @@ function AddGuests() {
             />
           </div>
           <div className="form-control">
-            <input
-              type="number"
-              name="peopleCount"
-              placeholder="Total people count"
-              className="input input-bordered"
-            />
+            <select name="side" className="select select-bordered">
+              <option disabled selected>
+                Select Guest Side
+              </option>
+              {["Komal", "Ankit"].map((r) => {
+                return (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           <div className="form-control">
             <select name="room" className="select select-bordered">

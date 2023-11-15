@@ -1,72 +1,29 @@
 "use client";
 
-import Authorized from "@/components/Authorized";
-import ContentLoader from "@/components/ContentLoader";
-import Hydrated from "@/components/Hydrated";
-import useGuests from "@/hooks/useGuests";
-import { useGuestStore } from "@/store/guest";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
 
 function Home() {
-  const { guests, loading } = useGuests();
-  const removeGuest = useGuestStore((s) => s.removeGuest);
-  const removeGuestLoading = useGuestStore((s) => s.removeGuestLoading);
-
-  return loading ? (
-    <ContentLoader />
-  ) : guests?.length <= 0 ? (
-    <div className="w-full p-8 text-center">No data available</div>
-  ) : (
-    <div className="">
-      <div className="overflow-x-auto">
-        <table className="table table-zebra">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Phone No</th>
-              <th>Room</th>
-            </tr>
-          </thead>
-          <tbody>
-            {guests.map((guest, index) => {
-              return (
-                <tr key={guest._id} className="hover">
-                  <th>{index + 1}</th>
-                  <td>{guest.name}</td>
-                  <td>{guest.phoneNo}</td>
-                  <td>
-                    <a href={`/rooms/${guest.room || ""}`}>
-                      {guest?.roomData?.type} - {guest?.roomData?.name}
-                    </a>
-                  </td>
-                  <td>
-                    <div className="flex items-center justify-center w-8">
-                      {removeGuestLoading[guest._id] ? (
-                        <div className="loading loading-ring loading-sm"></div>
-                      ) : (
-                        <button onClick={() => removeGuest(guest._id)}>
-                          <TrashIcon className="h-4 w-4 text-error" />
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+  return (
+    <div className="container mx-auto h-full flex items-center justify-center">
+      <div className="mb-36 px-4 flex flex-col items-center gap-8 text-center">
+        <h1 className="max-w-xl font-extrabold leading-[64px] text-transparent text-5xl bg-clip-text bg-gradient-to-r from-primary to-secondary">
+          A tool to manage our guests
+        </h1>
+        <h2 className="px-4 font-extralight">
+          We plan all our guests and there accomodation with this and avoid all
+          the hassle and fuss
+        </h2>
+        <a href="/home">
+          <button className="btn btn-primary flex gap-1 w-fit">
+            <div>GET STARTED</div>
+            <ArrowRightIcon className="w-5 h-5" />
+          </button>
+        </a>
       </div>
     </div>
   );
 }
 
 export default function Page() {
-  return (
-    <Hydrated>
-      <Authorized>
-        <Home />
-      </Authorized>
-    </Hydrated>
-  );
+  return <Home />;
 }

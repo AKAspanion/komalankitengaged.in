@@ -14,10 +14,14 @@ const HyderatedAuthorized: FC<AuthorizedProps> = ({ children }) => {
 
   return (
     <div className="w-full h-full text-center flex justify-center items-center">
-      <div>
+      <div className="flex flex-col items-center gap-1">
         <h2 className="text-xl font-semibold">Unauthorized</h2>
         <div className="text-gray-400">Pleae login to continue</div>
-        <div className="pb-16"></div>
+        <a href="/login">
+          <button className="btn mt-4 flex gap-1 w-fit">
+            <div>Login</div>
+          </button>
+        </a>
       </div>
     </div>
   );

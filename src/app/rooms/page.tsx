@@ -18,8 +18,13 @@ function Rooms() {
   ) : rooms?.length <= 0 ? (
     <div className="w-full p-8 text-center">No data available</div>
   ) : (
-    <div className="px-4 flex flex-col gap-4">
-      <h2 className="pt-4 text-md font-semibold">Rooms</h2>
+    <div className="px-4 pb-4 flex flex-col gap-4">
+      <div>
+        <h1 className="font-medium text-xl pl-1 pb-1">Rooms</h1>
+        <div className="text-sm text-gray-400 pl-1">
+          List of available rooms
+        </div>
+      </div>
       {hotelRooms?.length > 0 ? (
         <React.Fragment>
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6  gap-4">
