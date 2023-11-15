@@ -28,6 +28,7 @@ function AddGuests() {
         typeof formData.get("name") === "string"
           ? (formData.get("name") || "").toString()
           : "0";
+
       const phoneNo = parseInt(
         typeof formData.get("phoneNo") === "string"
           ? (formData.get("phoneNo") || "0").toString()
@@ -35,8 +36,8 @@ function AddGuests() {
       );
       const room =
         typeof formData.get("room") === "string"
-          ? (formData.get("room") || "0").toString()
-          : "0";
+          ? (formData.get("room") || "").toString()
+          : "";
 
       const side = (
         typeof formData.get("side") === "string"

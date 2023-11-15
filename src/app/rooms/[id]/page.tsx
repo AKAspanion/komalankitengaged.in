@@ -2,11 +2,12 @@
 
 import Authorized from "@/components/Authorized";
 import useRoomDetails from "@/hooks/useRoomDetails";
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "next/navigation";
 import ContentLoader from "@/components/ContentLoader";
 import RoomCard from "@/components/RoomCard";
 import classNames from "classnames";
+import NoContent from "@/components/NoContent";
 
 function RoomDetails() {
   const params = useParams();
@@ -18,7 +19,7 @@ function RoomDetails() {
   return roomDataLoading ? (
     <ContentLoader />
   ) : !roomData ? (
-    <div className="w-full p-8 text-center">No data available</div>
+    <NoContent />
   ) : (
     <div>
       <div className="px-4">
@@ -36,7 +37,7 @@ function RoomDetails() {
         </div>
       </div>
       {roomData?.guests?.length <= 0 ? (
-        <div className="w-full p-8 text-center">No data available</div>
+        <NoContent />
       ) : (
         <table className="table table-zebra border-t-[0.5px] border-gray-800">
           <thead>

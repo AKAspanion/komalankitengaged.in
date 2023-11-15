@@ -23,7 +23,7 @@ export default async function handler(
           return guest
             ? res.status(200).json({ data: guest })
             : res.status(404).json({
-                data: { message: `Guest with id: ${id} not found.` },
+                data: { message: `Guest with id: ${id} not found` },
               });
         })
         .catch((error) => {
@@ -44,13 +44,13 @@ export default async function handler(
         .updateOne(query, { $set: { name, phoneNo } })
         .then(() => {
           return res.status(200).json({
-            data: { message: `Guest with id: ${id} updated successfully.` },
+            data: { message: `Guest with id: ${id} updated successfully` },
           });
         })
         .catch((error) => {
           return res.status(500).json({
             data: {
-              message: `Guest with id: ${id} not updated.`,
+              message: `Guest with id: ${id} not updated`,
               error: error.toString(),
             },
           });
@@ -68,13 +68,13 @@ export default async function handler(
         .deleteOne(query)
         .then(() => {
           return res.status(200).json({
-            data: { message: `Guest with id: ${id} deleted successfully.` },
+            data: { message: `Guest with id: ${id} deleted successfully` },
           });
         })
         .catch((error) => {
           return res.status(500).json({
             data: {
-              message: `Guest with id: ${id} not deleted.`,
+              message: `Guest with id: ${id} not deleted`,
               error: error.toString(),
             },
           });

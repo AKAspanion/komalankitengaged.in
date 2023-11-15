@@ -24,7 +24,7 @@ export default async function handler(
           return room
             ? res.status(200).json({ data: room })
             : res.status(404).json({
-                data: { message: `Room with id: ${id} not found.` },
+                data: { message: `Room with id: ${id} not found` },
               });
         })
         .catch((error) => {

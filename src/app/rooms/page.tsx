@@ -5,18 +5,16 @@ import { useGuestStore } from "@/store/guest";
 import RoomCard from "@/components/RoomCard";
 import useRooms from "@/hooks/useRooms";
 import ContentLoader from "@/components/ContentLoader";
-import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import React from "react";
+import NoContent from "@/components/NoContent";
 
 function Rooms() {
-  const searchParams = useSearchParams();
-
   const { rooms, hotelRooms, homeRooms, loading } = useRooms();
 
   return loading ? (
     <ContentLoader />
   ) : rooms?.length <= 0 ? (
-    <div className="w-full p-8 text-center">No data available</div>
+    <NoContent />
   ) : (
     <div className="px-4 pb-4 flex flex-col gap-4">
       <div>

@@ -51,7 +51,12 @@ export default async function handler(
               as: "roomData",
             },
           },
-          { $unwind: "$roomData" },
+          {
+            $unwind: {
+              path: "$roomData",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
           { $sort: { _id: 1 } },
         ])
         .sort({ createdAt: -1 })

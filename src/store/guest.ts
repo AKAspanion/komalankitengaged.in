@@ -3,6 +3,7 @@ import { create } from "zustand";
 import axiosInstance from "@/lib/axios";
 import { getErrorMessage } from "@/utils/error";
 import toast from "react-hot-toast";
+import { Room } from "@/schema/room";
 
 export const useGuestStore = create<GuestStore>(
   // persist<GuestStore>(
@@ -11,6 +12,7 @@ export const useGuestStore = create<GuestStore>(
     guestsLoading: false,
     addGuestLoading: false,
     removeGuestLoading: {},
+    updateGuestRoomLoading: {},
     totalRooms: 20,
     setGuests: async () => {
       try {
@@ -75,6 +77,55 @@ export const useGuestStore = create<GuestStore>(
         return false;
       }
     },
+    updateGuestRoom: async (id, room) => {
+      try {
+        const loading = get().updateGuestRoomLoading;
+        if (!loading[id]) {
+          set((s) => ({
+            updateGuestRoomLoading: { ...s.updateGuestRoomLoading, [id]: true },
+          }));
+          const res = await axiosInstance.put("/api/guest/" + id + "/room", {
+            room: room._id,
+          });
+
+          if (res) {
+            set((s) => {
+              const guestLists = s.guests || [];
+              const guestListIndex = guestLists.findIndex((g) => g._id === id);
+
+              if (guestListIndex > -1) {
+                guestLists[guestListIndex] = {
+                  ...guestLists[guestListIndex],
+                  roomData: room,
+                };
+                return {
+                  guests: structuredClone(guestLists),
+                  updateGuestRoomLoading: {
+                    ...s.updateGuestRoomLoading,
+                    [id]: false,
+                  },
+                };
+              } else {
+                return {
+                  updateGuestRoomLoading: {
+                    ...s.updateGuestRoomLoading,
+                    [id]: false,
+                  },
+                };
+              }
+            });
+            return true;
+          }
+        }
+        return false;
+      } catch (error) {
+        set((s) => ({
+          updateGuestRoomLoading: { ...s.updateGuestRoomLoading, [id]: false },
+        }));
+        toast.error(getErrorMessage(error));
+        return false;
+      }
+    },
   })
   // {
   //   name: "guest-storage",
@@ -88,7 +139,9 @@ type GuestStore = {
   guestsLoading: boolean;
   addGuestLoading: boolean;
   removeGuestLoading: Record<string, boolean>;
+  updateGuestRoomLoading: Record<string, boolean>;
   addGuest: (guest: GuestBody) => Promise<boolean>;
   setGuests: () => Promise<boolean>;
   removeGuest: (id: string) => Promise<boolean>;
+  updateGuestRoom: (id: string, room: Room) => Promise<boolean>;
 };
