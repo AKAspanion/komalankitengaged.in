@@ -7,7 +7,7 @@ export async function POST(_req: Request) {
   try {
     const { email, password } = await _req.json();
 
-    const db = await getDB("guests");
+    const db = await getDB();
 
     const data = await db
       .collection("users")

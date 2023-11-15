@@ -13,7 +13,7 @@ export default async function handler(
 
   switch (_req.method) {
     case "GET": {
-      const db = await getDB("guests");
+      const db = await getDB();
       const rroms = await db
         .collection("rooms")
         .find<Room>({})

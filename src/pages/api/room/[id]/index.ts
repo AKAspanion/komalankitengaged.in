@@ -51,7 +51,7 @@ const getRoomByID = async (req: NextApiRequest) => {
 
   const query = { _id: new ObjectId(id.toString()) };
 
-  const db = await getDB("guests");
+  const db = await getDB();
 
   return await db
     .collection("rooms")

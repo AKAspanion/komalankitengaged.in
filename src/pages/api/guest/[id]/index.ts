@@ -36,7 +36,7 @@ export default async function handler(
         });
     }
     case "PUT": {
-      const db = await getDB("guests");
+      const db = await getDB();
       const { name, phoneNo } = _req.body;
 
       return await db
@@ -57,7 +57,7 @@ export default async function handler(
         });
     }
     case "DELETE": {
-      const db = await getDB("guests");
+      const db = await getDB();
       return db
         .collection("guests")
         .deleteOne(query)
@@ -90,7 +90,7 @@ const getGuestByID = async (req: NextApiRequest) => {
 
   const query = { _id: new ObjectId(id.toString()) };
 
-  const db = await getDB("guests");
+  const db = await getDB();
 
   return await db
     .collection("guests")
@@ -112,7 +112,7 @@ const getGuestByID = async (req: NextApiRequest) => {
 //   } = req;
 //   const query = { _id: new ObjectId(id.toString()) };
 
-//   const db = await getDB("guests");
+//   const db = await getDB();
 
 //   return await db
 //     .collection("guests")

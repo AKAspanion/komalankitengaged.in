@@ -16,7 +16,7 @@ export default async function handler(
   switch (_req.method) {
     case "POST": {
       try {
-        const db = await getDB("guests");
+        const db = await getDB();
         let bodyObject = _req.body;
 
         GuestSchema.parse(bodyObject);
@@ -39,7 +39,7 @@ export default async function handler(
       }
     }
     case "GET": {
-      const db = await getDB("guests");
+      const db = await getDB();
       const guests = await db
         .collection("guests")
         .aggregate<Guest>([

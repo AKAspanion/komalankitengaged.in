@@ -18,7 +18,7 @@ export const isAuthenticated = async (req: NextApiRequest) => {
         return false;
       }
 
-      const db = await getDB("guests");
+      const db = await getDB();
 
       const data = await db
         .collection("users")

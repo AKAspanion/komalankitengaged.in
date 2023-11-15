@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI;
+const dbName = process.env.DB_NAME || "prod-guests";
 const options = {};
 
 let client: MongoClient;
@@ -13,7 +14,7 @@ if (!uri) {
   connection = client.connect();
 }
 
-export const getDB = async (dbName: string) => {
+export const getDB = async () => {
   if (connection) {
     const client = await connection;
 
