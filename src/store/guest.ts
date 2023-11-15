@@ -1,6 +1,6 @@
-import axios from "axios";
 import { Guest, GuestBody } from "@/schema/guest";
 import { create } from "zustand";
+import axiosInstance from "@/lib/axios";
 
 export const useGuestStore = create<GuestStore>(
   // persist<GuestStore>(
@@ -15,7 +15,7 @@ export const useGuestStore = create<GuestStore>(
         const loading = get().guestsLoading;
         if (!loading) {
           set(() => ({ guestsLoading: true }));
-          const { data } = await axios.get<AppAPIRespose<Guest[]>>(
+          const { data } = await axiosInstance.get<AppAPIRespose<Guest[]>>(
             "/api/guest"
           );
 
@@ -35,7 +35,10 @@ export const useGuestStore = create<GuestStore>(
         const loading = get().setGuestLoading;
         if (!loading) {
           set(() => ({ setGuestLoading: true }));
-          await axios.post<AppAPIRespose<Guest>>("/api/guest", newGuest);
+          await axiosInstance.post<AppAPIRespose<Guest>>(
+            "/api/guest",
+            newGuest
+          );
 
           set(() => ({ setGuestLoading: false }));
           return true;
@@ -53,7 +56,7 @@ export const useGuestStore = create<GuestStore>(
           set((s) => ({
             removeGuestLoading: { ...s.removeGuestLoading, [id]: true },
           }));
-          await axios.delete<AppAPIRespose<Guest>>("/api/guest/" + id);
+          await axiosInstance.delete<AppAPIRespose<Guest>>("/api/guest/" + id);
 
           set((s) => ({
             guests: (s.guests || []).filter((g) => g._id !== id),

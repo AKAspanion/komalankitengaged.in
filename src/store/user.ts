@@ -1,5 +1,5 @@
+import axiosInstance from "@/lib/axios";
 import { User } from "@/schema/user";
-import axios from "axios";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -22,7 +22,7 @@ export const useUserStore = create(
           const loading = get().loginLoading;
           if (!loading) {
             set(() => ({ loginLoading: true }));
-            const { data } = await axios.post<
+            const { data } = await axiosInstance.post<
               AppAPIRespose<{ user: User; token: string }>
             >("/api/login", {
               email,
@@ -51,7 +51,7 @@ export const useUserStore = create(
   )
 );
 
-type UserStore = {
+export type UserStore = {
   user?: User;
   token?: string;
   loginLoading?: boolean;
