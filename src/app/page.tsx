@@ -25,6 +25,7 @@ function Home() {
               <th>Name</th>
               <th>Phone No</th>
               <th>People Count</th>
+              <th>Room</th>
             </tr>
           </thead>
           <tbody>
@@ -35,14 +36,17 @@ function Home() {
                   <td>{guest.name}</td>
                   <td>{guest.phoneNo}</td>
                   <td>{guest.peopleCount}</td>
+                  <td>{guest.room}</td>
                   <td>
-                    {removeGuestLoading[guest._id] ? (
-                      <div className="loading loading-ring loading-sm"></div>
-                    ) : (
-                      <button onClick={() => removeGuest(guest._id)}>
-                        <TrashIcon className="h-4 w-4 text-error" />
-                      </button>
-                    )}
+                    <div className="flex items-center justify-center w-8">
+                      {removeGuestLoading[guest._id] ? (
+                        <div className="loading loading-ring loading-sm"></div>
+                      ) : (
+                        <button onClick={() => removeGuest(guest._id)}>
+                          <TrashIcon className="h-4 w-4 text-error" />
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               );

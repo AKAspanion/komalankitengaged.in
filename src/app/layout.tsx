@@ -18,33 +18,32 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Toaster position="bottom-left" />
+        <Toaster
+          position="bottom-left"
+          toastOptions={{
+            // Define default options
+            className: "",
+            duration: 5000,
+            style: {
+              background: "#1D232A",
+              color: "#fff",
+              border: "0.5px solid #383F47",
+            },
+          }}
+        />
         <main className="min-h-screen">
           <div className="navbar bg-base-100">
-            <div className="flex-1 pl-3">
+            <div className="flex-1 pl-3 text-lg font-bold">
               <a href="/">Manage Guests</a>
             </div>
             <div className="flex-none">
               <ul className="menu menu-horizontal px-1">
                 <li>
-                  <a href="/room-layout">Room Layout</a>
+                  <a href="/rooms">Rooms</a>
                 </li>
                 <li>
                   <a href="/add-guests">Add Guests</a>
                 </li>
-                {/* <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <a>Link 1</a>
-                  </li>
-                  <li>
-                    <a>Link 2</a>
-                  </li>
-                </ul>
-              </details>
-            </li> */}
               </ul>
             </div>
           </div>

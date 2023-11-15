@@ -5,16 +5,16 @@ import { useGuestStore } from "@/store/store";
 
 // 01
 
-function RoomLayout() {
+function Rooms() {
   const rooms = useGuestStore((state) => state.totalRooms);
 
-  return <div className="p-4">Room Layout</div>;
+  return <div className="p-4">Rooms</div>;
 }
 
 export default function Page() {
   return (
     <Hydrated>
-      <RoomLayout />
+      <Rooms />
     </Hydrated>
   );
 }
