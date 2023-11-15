@@ -1,3 +1,4 @@
+import { Guest } from "@/schema/guest";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
 import { create } from "zustand";
@@ -9,7 +10,7 @@ export const useGuestStore = create(
       guests: [],
       totalRooms: 20,
       addGuest: (guest) => {
-        const newGuest = { ...guest, id: uid() };
+        const newGuest = { ...guest, _id: uid() };
 
         set(
           (s) => ({ guests: [newGuest, ...(s.guests || [])], totalRooms: 10 }),
@@ -18,7 +19,7 @@ export const useGuestStore = create(
       },
       removeGuest: (id) => {
         set(
-          (s) => ({ guests: (s.guests || []).filter((g) => g.id !== id) }),
+          (s) => ({ guests: (s.guests || []).filter((g) => g._id !== id) }),
           true
         );
       },
@@ -32,6 +33,6 @@ export const useGuestStore = create(
 type GuestStore = {
   guests: Guest[];
   totalRooms: number;
-  addGuest: (guest: Omit<Guest, "id">) => void;
+  addGuest: (guest: Omit<Guest, "_id">) => void;
   removeGuest: (id: string) => void;
 };

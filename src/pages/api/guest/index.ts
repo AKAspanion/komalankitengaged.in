@@ -1,22 +1,40 @@
 import { getDB } from "@/db/mongo";
+import { Guest, GuestSchema } from "@/schema/guest";
+import { getErrorMessage } from "@/utils/error";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(
   _req: NextApiRequest,
-  res: NextApiResponse<Guest[]>
+  res: NextApiResponse<AppAPIRespose<Guest[] | Guest | ResponseMessage>>
 ) {
-  const db = await getDB("guests");
-
   switch (_req.method) {
-    case "POST":
-      let bodyObject = _req.body;
-      let newGuest = await db.collection<Guest>("guests").insertOne(bodyObject);
+    case "POST": {
+      try {
+        const db = await getDB("guests");
+        let bodyObject = _req.body;
 
+        GuestSchema.parse(bodyObject);
+
+        let newGuest = await db.collection("guests").insertOne(bodyObject);
+
+        return res.status(200).json({
+          data: { ...bodyObject, _id: newGuest.insertedId.toString() },
+        });
+      } catch (error) {
+        return res.status(500).json({
+          data: { message: getErrorMessage(error) },
+        });
+      }
+    }
+    case "GET": {
+      const db = await getDB("guests");
+      const guests = await db.collection("guests").find<Guest>({}).toArray();
+      return res.status(200).json({ data: guests });
+    }
+    default: {
       return res
-        .status(200)
-        .json([{ ...bodyObject, _id: newGuest.insertedId.toString() }]);
-    case "GET":
-      const guests = await db.collection<Guest>("guests").find({}).toArray();
-      return res.status(200).json(guests);
+        .status(400)
+        .json({ data: { message: `Couldn't handle request` } });
+    }
   }
 }

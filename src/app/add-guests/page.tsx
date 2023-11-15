@@ -1,6 +1,7 @@
 "use client";
 
 import Hydrated from "@/components/Hydrated";
+import { GuestSchema } from "@/schema/guest";
 import { useGuestStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
@@ -26,7 +27,11 @@ function AddGuests() {
           : "0"
       );
 
-      addGuest({ name, peopleCount });
+      const body = { name, peopleCount };
+
+      GuestSchema.parse(body);
+
+      addGuest(body);
 
       router.push("/");
     } catch (error) {}
