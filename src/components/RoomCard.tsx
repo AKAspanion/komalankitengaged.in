@@ -8,8 +8,7 @@ interface RoomCardProps {
 
 const RoomCard: FC<RoomCardProps> = ({ room }) => {
   return (
-    <a
-      href={`/rooms/${room?._id || ""}/`}
+    <div
       className={classNames(
         "p-4 border-[0.5px] rounded-lg bg-base-200 cursor-pointer",
         { "border-secondary": room.type === "HOTEL" },
@@ -33,7 +32,7 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
           </p>
         </div>
       </div>
-    </a>
+    </div>
   );
 };
 

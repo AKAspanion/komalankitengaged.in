@@ -2,7 +2,7 @@
 
 import Authorized from "@/components/Authorized";
 import { useGuestStore } from "@/store/guest";
-import RoomCard from "./RoomCard";
+import RoomCard from "@/components/RoomCard";
 import useRooms from "@/hooks/useRooms";
 import ContentLoader from "@/components/ContentLoader";
 import React, { useEffect } from "react";
@@ -24,7 +24,9 @@ function Rooms() {
         <React.Fragment>
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6  gap-4">
             {hotelRooms.map((r) => (
-              <RoomCard key={r._id} room={r} />
+              <a key={r._id} href={`/rooms/${r?._id || ""}/`}>
+                <RoomCard room={r} />
+              </a>
             ))}
           </div>
         </React.Fragment>
@@ -33,7 +35,9 @@ function Rooms() {
         <React.Fragment>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
             {homeRooms.map((r) => (
-              <RoomCard key={r._id} room={r} />
+              <a key={r._id} href={`/rooms/${r?._id || ""}/`}>
+                <RoomCard room={r} />
+              </a>
             ))}
           </div>
         </React.Fragment>
