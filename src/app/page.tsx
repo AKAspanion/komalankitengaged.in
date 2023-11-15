@@ -6,12 +6,12 @@ function Home() {
   return (
     <div className="container mx-auto h-full flex items-center justify-center">
       <div className="mb-36 px-4 flex flex-col items-center gap-8 text-center">
-        <h1 className="max-w-xl font-extrabold leading-[64px] text-transparent text-5xl bg-clip-text bg-gradient-to-r from-primary to-secondary">
-          A tool to manage our guests
+        <h1 className="max-w-xl animate-text font-extrabold leading-[64px] text-transparent text-5xl bg-clip-text bg-gradient-to-r from-primary to-secondary">
+          {`A tool to manage our guests' accomodation`}
         </h1>
-        <h2 className="px-4 font-extralight">
-          We plan all our guests and there accomodation with this and avoid all
-          the hassle and fuss
+        <h2 className="px-4 font-light">
+          With this, we plan all the accomodation for our guests in advance to
+          avoid all the hassle and fuss
         </h2>
         <a href="/home">
           <button className="btn btn-primary flex gap-1 w-fit">

@@ -1,13 +1,15 @@
 import { CompleteGuest, GuestBody } from "@/schema/guest";
 import { create } from "zustand";
 import axiosInstance from "@/lib/axios";
+import { getErrorMessage } from "@/utils/error";
+import toast from "react-hot-toast";
 
 export const useGuestStore = create<GuestStore>(
   // persist<GuestStore>(
   (set, get) => ({
     guests: undefined,
     guestsLoading: false,
-    setGuestLoading: false,
+    addGuestLoading: false,
     removeGuestLoading: {},
     totalRooms: 20,
     setGuests: async () => {
@@ -28,21 +30,22 @@ export const useGuestStore = create<GuestStore>(
         return false;
       }
     },
-    setGuest: async (guest) => {
+    addGuest: async (guest) => {
       try {
         const newGuest = { ...guest };
 
-        const loading = get().setGuestLoading;
+        const loading = get().addGuestLoading;
         if (!loading) {
-          set(() => ({ setGuestLoading: true }));
+          set(() => ({ addGuestLoading: true }));
           await axiosInstance.post("/api/guest", newGuest);
 
-          set(() => ({ setGuestLoading: false }));
+          set(() => ({ addGuestLoading: false }));
           return true;
         }
         return false;
       } catch (error) {
         set(() => ({ guestsLoading: false }));
+        toast.error(getErrorMessage(error));
         return false;
       }
     },
@@ -53,19 +56,22 @@ export const useGuestStore = create<GuestStore>(
           set((s) => ({
             removeGuestLoading: { ...s.removeGuestLoading, [id]: true },
           }));
-          await axiosInstance.delete("/api/guest/" + id);
+          const res = await axiosInstance.delete("/api/guest/" + id);
 
-          set((s) => ({
-            guests: (s.guests || []).filter((g) => g._id !== id),
-            removeGuestLoading: { ...s.removeGuestLoading, [id]: false },
-          }));
-          return true;
+          if (res) {
+            set((s) => ({
+              guests: (s.guests || []).filter((g) => g._id !== id),
+              removeGuestLoading: { ...s.removeGuestLoading, [id]: false },
+            }));
+            return true;
+          }
         }
         return false;
       } catch (error) {
         set((s) => ({
           removeGuestLoading: { ...s.removeGuestLoading, [id]: false },
         }));
+        toast.error(getErrorMessage(error));
         return false;
       }
     },
@@ -80,9 +86,9 @@ type GuestStore = {
   guests?: CompleteGuest[];
   totalRooms: number;
   guestsLoading: boolean;
-  setGuestLoading: boolean;
+  addGuestLoading: boolean;
   removeGuestLoading: Record<string, boolean>;
-  setGuest: (guest: GuestBody) => Promise<boolean>;
+  addGuest: (guest: GuestBody) => Promise<boolean>;
   setGuests: () => Promise<boolean>;
   removeGuest: (id: string) => Promise<boolean>;
 };

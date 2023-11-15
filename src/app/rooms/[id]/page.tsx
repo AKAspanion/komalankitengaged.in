@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import ContentLoader from "@/components/ContentLoader";
 import RoomCard from "@/components/RoomCard";
+import classNames from "classnames";
 
 function RoomDetails() {
   const params = useParams();
@@ -53,7 +54,17 @@ function RoomDetails() {
                   <th>{index + 1}</th>
                   <td>{guest.name || "-"}</td>
                   <td>{guest.phoneNo || "-"}</td>
-                  <td>{guest.side || "-"}</td>
+                  <td>
+                    <div
+                      className={classNames(
+                        "badge",
+                        { "badge-secondary": guest.side === "Komal" },
+                        { "badge-accent": guest.side === "Ankit" }
+                      )}
+                    >
+                      {guest.side || "-"}
+                    </div>
+                  </td>
                 </tr>
               );
             })}

@@ -30,6 +30,8 @@ axiosInstance.interceptors.response.use(
       ls.set("user-storage", JSON.stringify({ state: {} }));
       window.location.reload();
     }
+
+    return Promise.reject(error);
   }
 );
 

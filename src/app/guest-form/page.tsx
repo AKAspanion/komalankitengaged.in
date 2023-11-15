@@ -12,8 +12,8 @@ import toast from "react-hot-toast";
 function AddGuests() {
   const router = useRouter();
   const { rooms, loading: roomLoading } = useRooms();
-  const setGuest = useGuestStore((state) => state.setGuest);
-  const guestLoading = useGuestStore((state) => state.setGuestLoading);
+  const addGuest = useGuestStore((state) => state.addGuest);
+  const guestLoading = useGuestStore((state) => state.addGuestLoading);
 
   const loading = roomLoading || guestLoading;
 
@@ -48,7 +48,7 @@ function AddGuests() {
 
       GuestSchema.parse(body);
 
-      const success = await setGuest(body);
+      const success = await addGuest(body);
       if (success) {
         toast.success("Added succesfully");
         router.push("/home");
@@ -62,8 +62,7 @@ function AddGuests() {
 
   useEffect(() => {
     if (searchParams) {
-      const type = searchParams.get("type");
-      console.log(type);
+      // const type = searchParams.get("type");
     }
   }, [searchParams]);
 

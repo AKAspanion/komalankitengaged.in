@@ -1,5 +1,5 @@
 import { getDB } from "@/db/mongo";
-import { isAuthenticated } from "@/lib/auth";
+import { isAdmin, isAuthenticated } from "@/lib/auth";
 import { Guest } from "@/schema/guest";
 import { ObjectId } from "mongodb";
 import { NextApiResponse, NextApiRequest } from "next";
@@ -57,6 +57,11 @@ export default async function handler(
         });
     }
     case "DELETE": {
+      if (!(await isAdmin(_req))) {
+        return res.status(403).json({
+          data: { message: `You are not authorized to do this operation` },
+        });
+      }
       const db = await getDB();
       return db
         .collection("guests")

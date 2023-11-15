@@ -36,3 +36,25 @@ export const isAuthenticated = async (req: NextApiRequest) => {
     return false;
   }
 };
+
+export const isAdmin = async (req: NextApiRequest) => {
+  try {
+    const token = (req.headers.authorization || "").split("Bearer ")[1] || "";
+
+    const decodedToken = Buffer.from(token, "base64").toString("ascii");
+
+    if (decodedToken) {
+      const [, , role] = decodedToken.split(":");
+
+      if (role === "ADMIN") {
+        return true;
+      }
+
+      return false;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+};

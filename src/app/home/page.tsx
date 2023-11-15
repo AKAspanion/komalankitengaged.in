@@ -6,6 +6,7 @@ import Hydrated from "@/components/Hydrated";
 import useGuests from "@/hooks/useGuests";
 import { useGuestStore } from "@/store/guest";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import classNames from "classnames";
 
 function Home() {
   const { guests, loading } = useGuests();
@@ -42,7 +43,17 @@ function Home() {
                   <th>{index + 1}</th>
                   <td>{guest.name || "-"}</td>
                   <td>{guest.phoneNo || "-"}</td>
-                  <td>{guest.side || "-"}</td>
+                  <td>
+                    <div
+                      className={classNames(
+                        "badge",
+                        { "badge-secondary": guest.side === "Komal" },
+                        { "badge-accent": guest.side === "Ankit" }
+                      )}
+                    >
+                      {guest.side || "-"}
+                    </div>
+                  </td>
                   <td>
                     <a
                       className="hover:underline underline-offset-4"
