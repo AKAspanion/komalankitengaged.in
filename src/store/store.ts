@@ -35,9 +35,3 @@ type GuestStore = {
   addGuest: (guest: Omit<Guest, "id">) => void;
   removeGuest: (id: string) => void;
 };
-
-declare type Guest = {
-  id: string;
-  name?: string;
-  peopleCount?: number;
-};

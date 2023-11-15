@@ -55,6 +55,14 @@ function AddGuests() {
             className="input input-bordered w-full max-w-xs"
           />
         </div>
+        <div className="form-control w-full max-w-xs">
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone number"
+            className="input input-bordered w-full max-w-xs"
+          />
+        </div>
         <button type="submit" className="btn btn-primary">
           Add
         </button>
