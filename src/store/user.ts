@@ -1,5 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { User } from "@/schema/user";
+import { getErrorMessage } from "@/utils/error";
+import toast from "react-hot-toast";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -39,6 +41,7 @@ export const useUserStore = create(
 
           return false;
         } catch (error) {
+          toast.error(getErrorMessage(error));
           set(() => ({ loginLoading: false }));
           return false;
         }
@@ -46,6 +49,11 @@ export const useUserStore = create(
     }),
     {
       name: "user-storage",
+      // @ts-ignore
+      partialize: (state) => ({
+        token: state.token,
+        user: state.user,
+      }),
     }
   )
 );
