@@ -6,7 +6,7 @@ import Hydrated from "@/components/Hydrated";
 import NoContent from "@/components/NoContent";
 import useGuests from "@/hooks/useGuests";
 import useRooms from "@/hooks/useRooms";
-import { Guest } from "@/schema/guest";
+import { CompleteGuest, Guest } from "@/schema/guest";
 import { Room } from "@/schema/room";
 import { useGuestStore } from "@/store/guest";
 import { HomeIcon } from "@heroicons/react/20/solid";
@@ -113,7 +113,7 @@ const RoomModal = ({
             </div>
           </div>
           {roomLoading ? (
-            <div className="loading loading-ring loading-sm"></div>
+            <div className="loading loading-spinner loading-sm"></div>
           ) : (
             <select
               className="select select-bordered w-full min-w-[80px]"
@@ -149,7 +149,7 @@ const RoomModal = ({
   );
 };
 
-const GuestActions = ({ guest }: { guest: Guest }) => {
+const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
   const removeGuest = useGuestStore((s) => s.removeGuest);
   const updateGuestRoom = useGuestStore((s) => s.updateGuestRoom);
   const removeGuestLoading = useGuestStore((s) => s.removeGuestLoading);
@@ -158,18 +158,18 @@ const GuestActions = ({ guest }: { guest: Guest }) => {
   return (
     <div className="flex items-center justify-center w-8 gap-2">
       {updateGuestRoomLoading[guest._id] ? (
-        <div className="loading loading-ring loading-sm"></div>
+        <div className="loading loading-spinner h-4"></div>
       ) : (
         <RoomModal
           key={guest._id}
           id={guest._id}
-          onUpdate={(r) => updateGuestRoom(guest._id, r)}
+          onUpdate={(r) => updateGuestRoom(guest._id, r, guest?.room)}
         />
       )}
       {removeGuestLoading[guest._id] ? (
-        <div className="loading loading-ring loading-sm"></div>
+        <div className="loading loading-spinner h-4"></div>
       ) : (
-        <button onClick={() => removeGuest(guest._id)}>
+        <button onClick={() => removeGuest(guest._id, guest.room)}>
           <TrashIcon className="h-4 w-4 text-error" />
         </button>
       )}

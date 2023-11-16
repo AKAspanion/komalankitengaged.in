@@ -22,6 +22,7 @@ export default async function handler(
       const db = await getDB();
       let bodyObject = _req.body;
       const roomId = bodyObject.room;
+      const prevRoomId = bodyObject.prevRoom;
 
       if (!roomId) {
         return res.status(400).json({
@@ -30,18 +31,34 @@ export default async function handler(
       }
 
       const room = new ObjectId(roomId);
+      const roomQuery = { _id: room };
 
-      db.collection("guests")
-        .updateOne(query, { $set: { room } })
+      const promises = [
+        db.collection("rooms").updateOne(roomQuery, { $inc: { occupied: 1 } }),
+        db.collection("guests").updateOne(query, { $set: { room } }),
+      ];
+
+      if (prevRoomId) {
+        const prevRoomQuery = { _id: new ObjectId(prevRoomId) };
+        promises.push(
+          db
+            .collection("rooms")
+            .updateOne(prevRoomQuery, { $inc: { occupied: -1 } })
+        );
+      }
+
+      Promise.all(promises)
         .then(() => {
           return res.status(200).json({
-            data: { message: `Guest with id: ${id} updated successfully` },
+            data: {
+              message: `Room updated successfully for guest with id: ${id} `,
+            },
           });
         })
         .catch((error) => {
           return res.status(500).json({
             data: {
-              message: `Guest with id: ${id} not updated`,
+              message: `Room not updated`,
               error: error.toString(),
             },
           });

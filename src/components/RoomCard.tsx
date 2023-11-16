@@ -15,11 +15,8 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
         { "border-accent": room.type === "HOME" }
       )}
     >
-      <div className="">{room?.name}</div>
-      <div className="flex flex-wrap justify-between items-center gap-3 mt-4">
-        <div className="text-sm text-gray-400">
-          Capacity <p className="badge badge-neutral">{room?.capacity}</p>
-        </div>
+      <div className="flex flex-wrap justify-between items-center gap-3F">
+        <div className="">{room?.name}</div>
         <div className="text-sm text-gray-400">
           <p
             className={classNames(
@@ -30,6 +27,15 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
           >
             {room?.type}
           </p>
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-3 mt-4">
+        <div className="text-sm text-gray-400">
+          Capacity <p className="badge badge-neutral">{room?.capacity}</p>
+        </div>
+        <div className="text-sm text-gray-400">
+          Occupied{" "}
+          <p className="badge badge-neutral">{room?.occupied || "0"}</p>
         </div>
       </div>
     </div>

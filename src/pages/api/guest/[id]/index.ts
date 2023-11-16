@@ -62,10 +62,23 @@ export default async function handler(
           data: { message: `You are not authorized to do this operation` },
         });
       }
+      const {
+        query: { room },
+      } = _req;
       const db = await getDB();
-      return db
-        .collection("guests")
-        .deleteOne(query)
+
+      const promises: any[] = [db.collection("guests").deleteOne(query)];
+
+      if (room) {
+        const roomQuery = { _id: new ObjectId(room.toString()) };
+        promises.push(
+          db
+            .collection("rooms")
+            .updateOne(roomQuery, { $inc: { occupied: -1 } })
+        );
+      }
+
+      return Promise.all(promises)
         .then(() => {
           return res.status(200).json({
             data: { message: `Guest with id: ${id} deleted successfully` },

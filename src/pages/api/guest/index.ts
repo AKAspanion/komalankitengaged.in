@@ -25,9 +25,24 @@ export default async function handler(
           ? new ObjectId(bodyObject?.room)
           : undefined;
 
-        let newGuest = await db
-          .collection("guests")
-          .insertOne({ ...bodyObject, room, createdAt: new Date(Date.now()) });
+        const promises: any[] = [
+          await db.collection("guests").insertOne({
+            ...bodyObject,
+            room,
+            createdAt: new Date(Date.now()),
+          }),
+        ];
+
+        if (room) {
+          const roomQuery = { _id: new ObjectId(room.toString()) };
+          promises.push(
+            db
+              .collection("rooms")
+              .updateOne(roomQuery, { $inc: { occupied: 1 } })
+          );
+        }
+
+        const [newGuest] = await Promise.all(promises);
 
         return res.status(200).json({
           data: { ...bodyObject, _id: newGuest.insertedId.toString() },

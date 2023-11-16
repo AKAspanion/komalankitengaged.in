@@ -77,6 +77,7 @@ function AddGuests() {
         <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
           <div className="form-control">
             <input
+              required
               type="text"
               name="name"
               placeholder="Name"
@@ -92,7 +93,7 @@ function AddGuests() {
             />
           </div>
           <div className="form-control">
-            <select name="side" className="select select-bordered">
+            <select required name="side" className="select select-bordered">
               <option disabled selected>
                 Select Guest Side
               </option>

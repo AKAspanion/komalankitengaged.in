@@ -51,14 +51,16 @@ export const useGuestStore = create<GuestStore>(
         return false;
       }
     },
-    removeGuest: async (id) => {
+    removeGuest: async (id, room) => {
       try {
         const loading = get().removeGuestLoading;
         if (!loading[id]) {
           set((s) => ({
             removeGuestLoading: { ...s.removeGuestLoading, [id]: true },
           }));
-          const res = await axiosInstance.delete("/api/guest/" + id);
+          const res = await axiosInstance.delete(
+            `/api/guest/${id}?room=${room || ""}`
+          );
 
           if (res) {
             set((s) => ({
@@ -77,7 +79,7 @@ export const useGuestStore = create<GuestStore>(
         return false;
       }
     },
-    updateGuestRoom: async (id, room) => {
+    updateGuestRoom: async (id, room, prevRoom) => {
       try {
         const loading = get().updateGuestRoomLoading;
         if (!loading[id]) {
@@ -86,6 +88,7 @@ export const useGuestStore = create<GuestStore>(
           }));
           const res = await axiosInstance.put("/api/guest/" + id + "/room", {
             room: room._id,
+            prevRoom: prevRoom || "",
           });
 
           if (res) {
@@ -142,6 +145,10 @@ type GuestStore = {
   updateGuestRoomLoading: Record<string, boolean>;
   addGuest: (guest: GuestBody) => Promise<boolean>;
   setGuests: () => Promise<boolean>;
-  removeGuest: (id: string) => Promise<boolean>;
-  updateGuestRoom: (id: string, room: Room) => Promise<boolean>;
+  removeGuest: (id: string, room?: string) => Promise<boolean>;
+  updateGuestRoom: (
+    guest: string,
+    room: Room,
+    prevRoom?: string
+  ) => Promise<boolean>;
 };

@@ -25,7 +25,7 @@ function Rooms() {
       </div>
       {hotelRooms?.length > 0 ? (
         <React.Fragment>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6  gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-4">
             {hotelRooms.map((r) => (
               <a key={r._id} href={`/rooms/${r?._id || ""}/`}>
                 <RoomCard room={r} />

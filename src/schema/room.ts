@@ -6,6 +6,7 @@ export const RoomSchema = z.object({
   name: z.coerce.string().min(2),
   type: z.enum(["HOME", "HOTEL"]),
   capacity: z.coerce.number().min(2),
+  occupied: z.optional(z.number().min(0)),
 });
 
 declare type RoomDocument = { _id: string; createdAt: string };
