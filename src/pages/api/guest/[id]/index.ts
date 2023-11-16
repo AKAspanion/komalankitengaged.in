@@ -44,16 +44,43 @@ export default async function handler(
       const db = await getDB();
       const { name, phoneNo, room, side } = _req.body;
 
-      return await db
-        .collection("guests")
-        .updateOne(query, {
+      const promises = [
+        db.collection("guests").updateOne(query, {
           $set: {
             name,
             side,
             phoneNo,
             room: room ? new ObjectId(room) : undefined,
           },
-        })
+        }),
+      ];
+
+      const {
+        query: { room: prevRoom },
+      } = _req;
+
+      if (prevRoom) {
+        promises.push(
+          db
+            .collection("rooms")
+            .updateOne(
+              { _id: new ObjectId(prevRoom.toString()) },
+              { $inc: { occupied: -1 } }
+            )
+        );
+      }
+      if (room) {
+        promises.push(
+          db
+            .collection("rooms")
+            .updateOne(
+              { _id: new ObjectId(room.toString()) },
+              { $inc: { occupied: 1 } }
+            )
+        );
+      }
+
+      return Promise.all(promises)
         .then(() => {
           return res.status(200).json({
             data: { message: `Guest with id: ${id} updated successfully` },
@@ -82,11 +109,13 @@ export default async function handler(
       const promises: any[] = [db.collection("guests").deleteOne(query)];
 
       if (room) {
-        const roomQuery = { _id: new ObjectId(room.toString()) };
         promises.push(
           db
             .collection("rooms")
-            .updateOne(roomQuery, { $inc: { occupied: -1 } })
+            .updateOne(
+              { _id: new ObjectId(room.toString()) },
+              { $inc: { occupied: -1 } }
+            )
         );
       }
 

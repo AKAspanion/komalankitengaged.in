@@ -127,14 +127,17 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
       return false;
     }
   },
-  updateGuest: async (id, guest) => {
+  updateGuest: async (id, guest, prevRoom) => {
     try {
       const newGuest = { ...guest };
 
       const loading = get().updateGuestLoading;
       if (!loading) {
         set(() => ({ updateGuestLoading: true }));
-        await axiosInstance.put("/api/guest/" + id, newGuest);
+        await axiosInstance.put(
+          `/api/guest/${id}?room=${prevRoom || ""}`,
+          newGuest
+        );
 
         set(() => ({ updateGuestLoading: false }));
         return true;
@@ -156,7 +159,11 @@ type GuestStore = {
   removeGuestLoading: Record<string, boolean>;
   updateGuestRoomLoading: Record<string, boolean>;
   addGuest: (guest: GuestBody) => Promise<boolean>;
-  updateGuest: (id: string, guest: GuestBody) => Promise<boolean>;
+  updateGuest: (
+    id: string,
+    guest: GuestBody,
+    prevRoom?: string
+  ) => Promise<boolean>;
   setGuests: () => Promise<boolean>;
   removeGuest: (id: string, room?: string) => Promise<boolean>;
   updateGuestRoom: (

@@ -20,6 +20,7 @@ function GuestForm() {
 
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState("");
+  const [prevRoom, setPrevRoom] = useState("");
 
   const loading = roomLoading || guestLoading || updateGuestLoading;
 
@@ -51,9 +52,9 @@ function GuestForm() {
     const body = getBody(event);
 
     if (body) {
-      const success = await updateGuest(editId, body);
+      const success = await updateGuest(editId, body, prevRoom);
       if (success) {
-        toast.success("Added succesfully");
+        toast.success("Updated succesfully");
         router.push("/home");
       }
     }
@@ -86,6 +87,7 @@ function GuestForm() {
       const canEdit = type === "edit";
       setIsEdit(canEdit);
       setEditId(searchParams.get("id") || "");
+      setPrevRoom(searchParams.get("room") || "");
     }
   }, [searchParams]);
 
