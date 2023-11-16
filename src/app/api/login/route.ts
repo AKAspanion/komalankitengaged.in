@@ -16,14 +16,14 @@ export async function POST(_req: Request) {
     if (!data) {
       return NextResponse.json(
         { message: "User authentication failed" },
-        { status: 401 }
+        { status: 400 }
       );
     }
 
     if (data?.password !== password) {
       return NextResponse.json(
         { message: "User authentication failed" },
-        { status: 401 }
+        { status: 400 }
       );
     }
 
