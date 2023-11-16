@@ -36,12 +36,24 @@ export default async function handler(
         });
     }
     case "PUT": {
+      if (!(await isAdmin(_req))) {
+        return res.status(403).json({
+          data: { message: `You are not authorized to do this operation` },
+        });
+      }
       const db = await getDB();
-      const { name, phoneNo } = _req.body;
+      const { name, phoneNo, room, side } = _req.body;
 
       return await db
         .collection("guests")
-        .updateOne(query, { $set: { name, phoneNo } })
+        .updateOne(query, {
+          $set: {
+            name,
+            side,
+            phoneNo,
+            room: room ? new ObjectId(room) : undefined,
+          },
+        })
         .then(() => {
           return res.status(200).json({
             data: { message: `Guest with id: ${id} updated successfully` },

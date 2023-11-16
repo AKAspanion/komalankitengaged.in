@@ -83,7 +83,7 @@ export default function RootLayout({
           </div>
           <div
             className="overflow-y-auto"
-            style={{ height: "calc(100vh - 68px)" }}
+            style={{ height: "calc(100svh - 68px)" }}
           >
             {children}
           </div>

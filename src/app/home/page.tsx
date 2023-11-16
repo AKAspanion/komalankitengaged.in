@@ -10,7 +10,7 @@ import { CompleteGuest, Guest } from "@/schema/guest";
 import { Room } from "@/schema/room";
 import { useGuestStore } from "@/store/guest";
 import { HomeIcon } from "@heroicons/react/20/solid";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { useState } from "react";
 
@@ -155,10 +155,26 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
   const removeGuestLoading = useGuestStore((s) => s.removeGuestLoading);
   const updateGuestRoomLoading = useGuestStore((s) => s.updateGuestRoomLoading);
 
+  const editLoading =
+    updateGuestRoomLoading[guest._id] || removeGuestLoading[guest._id];
+
   return (
-    <div className="flex items-center justify-center w-8 gap-2">
+    <div className="flex items-center justify-center w-16 gap-2">
+      {editLoading ? (
+        <PencilIcon className="w-3 h-4 text-gray-500" />
+      ) : (
+        <a
+          href={`/guest-form?type=edit&id=${guest?._id || ""}&room=${
+            guest?.room || ""
+          }&phoneNo=${guest?.phoneNo || ""}&side=${guest?.side}&name=${
+            guest?.name || ""
+          }`}
+        >
+          {<PencilIcon className="w-3 h-4 cursor-pointer" />}
+        </a>
+      )}
       {updateGuestRoomLoading[guest._id] ? (
-        <div className="loading loading-spinner h-4"></div>
+        <div className="loading loading-spinner h-4 w-4"></div>
       ) : (
         <RoomModal
           key={guest._id}
@@ -167,7 +183,9 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
         />
       )}
       {removeGuestLoading[guest._id] ? (
-        <div className="loading loading-spinner h-4"></div>
+        <div className="loading loading-spinner h-4 w-4"></div>
+      ) : editLoading ? (
+        <TrashIcon className="h-4 w-4 text-gray-500" />
       ) : (
         <button onClick={() => removeGuest(guest._id, guest.room)}>
           <TrashIcon className="h-4 w-4 text-error" />

@@ -1,4 +1,4 @@
-import { CompleteGuest, GuestBody } from "@/schema/guest";
+import { CompleteGuest, Guest, GuestBody } from "@/schema/guest";
 import { create } from "zustand";
 import axiosInstance from "@/lib/axios";
 import { getErrorMessage } from "@/utils/error";
@@ -9,6 +9,7 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
   guests: undefined,
   guestsLoading: false,
   addGuestLoading: false,
+  updateGuestLoading: false,
   removeGuestLoading: {},
   updateGuestRoomLoading: {},
   setGuests: async () => {
@@ -126,15 +127,36 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
       return false;
     }
   },
+  updateGuest: async (id, guest) => {
+    try {
+      const newGuest = { ...guest };
+
+      const loading = get().updateGuestLoading;
+      if (!loading) {
+        set(() => ({ updateGuestLoading: true }));
+        await axiosInstance.put("/api/guest/" + id, newGuest);
+
+        set(() => ({ updateGuestLoading: false }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      set(() => ({ updateGuestLoading: false }));
+      toast.error(getErrorMessage(error));
+      return false;
+    }
+  },
 }));
 
 type GuestStore = {
   guests?: CompleteGuest[];
   guestsLoading: boolean;
   addGuestLoading: boolean;
+  updateGuestLoading: boolean;
   removeGuestLoading: Record<string, boolean>;
   updateGuestRoomLoading: Record<string, boolean>;
   addGuest: (guest: GuestBody) => Promise<boolean>;
+  updateGuest: (id: string, guest: GuestBody) => Promise<boolean>;
   setGuests: () => Promise<boolean>;
   removeGuest: (id: string, room?: string) => Promise<boolean>;
   updateGuestRoom: (
