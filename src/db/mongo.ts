@@ -14,11 +14,11 @@ if (!uri) {
   connection = client.connect();
 }
 
-export const getDB = async () => {
+export const getDB = async (db_name = dbName) => {
   if (connection) {
     const client = await connection;
 
-    return client.db(dbName);
+    return client.db(db_name);
   } else {
     throw new Error("No connection found");
   }
