@@ -38,7 +38,7 @@ export default function RootLayout({
         <main className="h-screen">
           <div className="navbar">
             <div className="flex-1 flex">
-              <a href="/" tabIndex={0} className="btn btn-ghost btn-circle">
+              <a href="/home" tabIndex={0} className="btn btn-ghost btn-circle">
                 <BriefcaseIcon className="w-5 h-5" />
               </a>
             </div>
