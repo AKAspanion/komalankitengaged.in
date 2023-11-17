@@ -57,7 +57,6 @@ function GuestForm() {
       const success = await updateGuest(editId, body, prevRoom);
       if (success) {
         toast.success("Updated succesfully");
-        router.push("/home");
       }
     }
   }
@@ -73,7 +72,6 @@ function GuestForm() {
         const success = await addGuest(body);
         if (success) {
           toast.success("Added succesfully");
-          router.push("/home");
         }
       }
     } catch (error) {
