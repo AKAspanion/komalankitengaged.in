@@ -10,7 +10,7 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
   return (
     <div
       className={classNames(
-        "p-4 border-[0.5px] rounded-lg bg-base-200 cursor-pointer",
+        "p-4 border-[0.5px] rounded-lg bg-base-200",
         { "border-secondary": room.type === "HOTEL" },
         { "border-accent": room.type === "HOME" }
       )}

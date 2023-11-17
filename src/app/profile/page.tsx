@@ -18,7 +18,7 @@ function Profile() {
 
   return (
     <div className="p-4 text-center">
-      <div className="pb-6">{user?.email || "-"}</div>
+      <div className="p-6">{user?.email || "-"}</div>
       {token ? (
         <button className="btn" onClick={handleLogout}>
           Logout

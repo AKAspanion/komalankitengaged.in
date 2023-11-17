@@ -51,19 +51,19 @@ function RoomDetails() {
           <tbody>
             {roomData?.guests.map((guest, index) => {
               return (
-                <tr key={guest._id} className="hover">
+                <tr key={guest?._id} className="hover">
                   <th>{index + 1}</th>
-                  <td>{guest.name || "-"}</td>
-                  <td>{guest.phoneNo || "-"}</td>
+                  <td>{guest?.name || "-"}</td>
+                  <td>{guest?.phoneNo || "-"}</td>
                   <td>
                     <div
                       className={classNames(
                         "badge",
-                        { "badge-secondary": guest.side === "Komal" },
-                        { "badge-accent": guest.side === "Ankit" }
+                        { "badge-secondary": guest?.side === "Komal" },
+                        { "badge-accent": guest?.side === "Ankit" }
                       )}
                     >
-                      {guest.side || "-"}
+                      {guest?.side || "-"}
                     </div>
                   </td>
                 </tr>

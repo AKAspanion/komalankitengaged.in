@@ -29,7 +29,9 @@ function GuestForm() {
       const formData = new FormData(event.currentTarget);
 
       const name = (formData.get("guestName") || "").toString();
-      const side = (formData.get("side") || "").toString() as GuestSide;
+      const side = undefEmptyString(
+        (formData.get("side") || "").toString()
+      ) as GuestSide;
       const phoneNo = undefEmptyString(
         (formData.get("phoneNo") || "").toString()
       );

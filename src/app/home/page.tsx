@@ -43,25 +43,25 @@ function Home() {
           <tbody>
             {guests.map((guest, index) => {
               return (
-                <tr key={guest._id} className="hover">
+                <tr key={guest?._id} className="hover">
                   <th>{index + 1}</th>
-                  <td>{guest.name || "-"}</td>
-                  <td>{guest.phoneNo || "-"}</td>
+                  <td>{guest?.name || "-"}</td>
+                  <td>{guest?.phoneNo || "-"}</td>
                   <td>
                     <div
                       className={classNames(
                         "badge",
-                        { "badge-secondary": guest.side === "Komal" },
-                        { "badge-accent": guest.side === "Ankit" }
+                        { "badge-secondary": guest?.side === "Komal" },
+                        { "badge-accent": guest?.side === "Ankit" }
                       )}
                     >
-                      {guest.side || "-"}
+                      {guest?.side || "-"}
                     </div>
                   </td>
                   <td>
                     <a
                       className="hover:underline underline-offset-4"
-                      href={`/rooms/${guest.room || ""}`}
+                      href={`/rooms/${guest?.room || ""}`}
                     >
                       {guest?.roomData?.type} - {guest?.roomData?.name}
                     </a>
@@ -156,7 +156,7 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
   const updateGuestRoomLoading = useGuestStore((s) => s.updateGuestRoomLoading);
 
   const editLoading =
-    updateGuestRoomLoading[guest._id] || removeGuestLoading[guest._id];
+    updateGuestRoomLoading[guest?._id] || removeGuestLoading[guest?._id];
 
   return (
     <div className="flex items-center justify-center w-16 gap-2">
@@ -173,21 +173,21 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
           {<PencilIcon className="w-3 h-4 cursor-pointer" />}
         </a>
       )}
-      {updateGuestRoomLoading[guest._id] ? (
+      {updateGuestRoomLoading[guest?._id] ? (
         <div className="loading loading-spinner h-4 w-4"></div>
       ) : (
         <RoomModal
-          key={guest._id}
-          id={guest._id}
-          onUpdate={(r) => updateGuestRoom(guest._id, r, guest?.room)}
+          key={guest?._id}
+          id={guest?._id}
+          onUpdate={(r) => updateGuestRoom(guest?._id, r, guest?.room)}
         />
       )}
-      {removeGuestLoading[guest._id] ? (
+      {removeGuestLoading[guest?._id] ? (
         <div className="loading loading-spinner h-4 w-4"></div>
       ) : editLoading ? (
         <TrashIcon className="h-4 w-4 text-gray-500" />
       ) : (
-        <button onClick={() => removeGuest(guest._id, guest.room)}>
+        <button onClick={() => removeGuest(guest?._id, guest?.room)}>
           <TrashIcon className="h-4 w-4 text-error" />
         </button>
       )}

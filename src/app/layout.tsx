@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Manage Guests",
-  description: "To manage my guests",
+  description: "Tool to manage our guests",
 };
 
 export default function RootLayout({
