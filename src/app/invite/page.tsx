@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import localFont from "@next/font/local";
@@ -40,15 +41,17 @@ function Invite() {
 
   return (
     <div className={classNames("relative bg-slate-50 text-sm text-black")}>
-      <div className="absolute bg-slate-50 top-0 w-screen h-screen">
-        <Image
-          quality={100}
+      <div className="absolute bg-slate-50 top-0 w-screen h-[100svh] overflow-hidden">
+        <img
           alt="bg"
           src="/us.jpeg"
-          layout="fill"
-          objectFit="cover"
           className={loaded ? "zoom-in" : "not-zoom-in"}
-          style={{ filter: "opacity(0.9)" }}
+          style={{
+            filter: "opacity(0.9)",
+            height: "100%",
+            objectPosition: "center center",
+            objectFit: "cover",
+          }}
           onLoad={handleOnLoad}
         />
       </div>
