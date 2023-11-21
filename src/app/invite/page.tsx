@@ -3,7 +3,7 @@
 import localFont from "next/font/local";
 import classNames from "classnames";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -66,12 +66,11 @@ function Invite() {
           onLoad={handleOnLoad}
         />
       </div>
-
-      <div className="z-10 w-screen absolute text-center h-screen flex flex-col items-center justify-between gap-16 p-8">
+      <div className="z-10 w-screen absolute text-center h-screen flex flex-col items-center justify-between gap-16 p-16">
         <div></div>
         <div className="text-center flex flex-col items-center justify-center">
           <div
-            style={{ textShadow: "0.5px 0.5px 2px black" }}
+            style={{ textShadow: "1px 1px 2px black" }}
             className={classNames(
               "text-5xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-xl",
               helostar.className
