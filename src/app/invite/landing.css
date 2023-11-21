@@ -1,6 +1,6 @@
 .us-img {
   background-image: url("/us.jpeg");
-  background-position: center center;
+  background-position: center;
   background-size: cover;
 }
 

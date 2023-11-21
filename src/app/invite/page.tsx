@@ -42,24 +42,9 @@ function Invite() {
   return (
     <div
       className={classNames(
-        "relative us-img bg-slate-50 h-[100svh] text-sm text-black"
+        "relative us-img bg-slate-50 h-[100vh] w-[100vw] text-sm text-black"
       )}
     >
-      <div className="us-img absolute top-0 w-[100vw] h-[100svh] overflow-hidden">
-        {/* <img
-          alt="bg"
-          src="/us.jpeg"
-          className={loaded ? "zoom-in" : "not-zoom-in"}
-          style={{
-            filter: "opacity(0.9)",
-            height: "100%",
-            objectPosition: "center center",
-            objectFit: "cover",
-          }}
-          onLoad={handleOnLoad}
-        /> */}
-      </div>
-
       <div className="z-10 w-screen absolute text-center h-screen flex flex-col items-center justify-between gap-16 p-8">
         <div></div>
         <div className="text-center flex flex-col items-center justify-center">
@@ -99,18 +84,18 @@ function Invite() {
               </div>
             </div>
           ) : null}
-          <div
-            className={classNames(
-              "leading-6 tracking-widest px-4 py-1 rounded w-fit"
-            )}
-          >
-            <a href="/invite/details">
-              <div className="font-semibold underline underline-offset-4">
-                1.10.2023
-              </div>
-            </a>
-          </div>
         </div>
+      </div>
+      <div
+        className={classNames(
+          "leading-6 tracking-widest px-4 py-1 rounded w-fit"
+        )}
+      >
+        <a href="/invite/details">
+          <div className="font-semibold underline underline-offset-4">
+            1.10.2023
+          </div>
+        </a>
       </div>
     </div>
   );
