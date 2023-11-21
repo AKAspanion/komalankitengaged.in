@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Komal and Ankit's Engagement",
-  description: "Tool to manage our guests and invitation",
+  description: "Komal and Ankit are getting engaged on 01.12.2023",
 };
 
 export default function RootLayout({

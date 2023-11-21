@@ -8,6 +8,7 @@ import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import "./landing.css";
+import Timer from "./timer";
 
 const marley = localFont({
   src: "../../../public/fonts/marley/ttf/marley-marley-regular-lovely-script-400.ttf",
@@ -17,6 +18,8 @@ const helostar = localFont({
   src: "../../../public/fonts/helostar/ttf/helostar-helostar-400.ttf",
   variable: "--font-helostar",
 });
+
+const targetDate = new Date("12.01.2023 21:00").getTime();
 
 function Invite() {
   const [loaded, setLoaded] = useState(false);
@@ -115,6 +118,9 @@ function Invite() {
                 1.10.2023
               </div>
             </a>
+          </div>
+          <div>
+            <Timer targetDate={targetDate} />
           </div>
         </div>
       </div>
