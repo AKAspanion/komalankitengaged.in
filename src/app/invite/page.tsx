@@ -1,7 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import localFont from "@next/font/local";
+import localFont from "next/font/local";
 import classNames from "classnames";
 
 import Image from "next/image";
@@ -41,10 +40,33 @@ function Invite() {
 
   return (
     <div
-      className={classNames(
-        "relative us-img bg-slate-50 h-[100vh] w-[100vw] text-sm text-black"
-      )}
+      className={classNames("relative bg-slate-50 text-sm text-black h-screen")}
     >
+      <div className="absolute hidden sm:block bg-slate-50 top-0 w-screen h-screen">
+        <Image
+          quality={100}
+          alt="bg"
+          src="/us.jpeg"
+          layout="fill"
+          objectFit="cover"
+          className={loaded ? "zoom-in" : "not-zoom-in"}
+          style={{ filter: "opacity(0.9)" }}
+          onLoad={handleOnLoad}
+        />
+      </div>
+      <div className="absolute sm:hidden bg-slate-50 top-0 w-screen h-screen">
+        <Image
+          quality={100}
+          alt="bg"
+          src="/us-sm.jpeg"
+          layout="fill"
+          objectFit="cover"
+          className={loaded ? "zoom-in" : "not-zoom-in"}
+          style={{ filter: "opacity(0.9)" }}
+          onLoad={handleOnLoad}
+        />
+      </div>
+
       <div className="z-10 w-screen absolute text-center h-screen flex flex-col items-center justify-between gap-16 p-8">
         <div></div>
         <div className="text-center flex flex-col items-center justify-center">
@@ -84,18 +106,18 @@ function Invite() {
               </div>
             </div>
           ) : null}
-        </div>
-      </div>
-      <div
-        className={classNames(
-          "leading-6 tracking-widest px-4 py-1 rounded w-fit"
-        )}
-      >
-        <a href="/invite/details">
-          <div className="font-semibold underline underline-offset-4">
-            1.10.2023
+          <div
+            className={classNames(
+              "leading-6 tracking-widest px-4 py-1 rounded w-fit"
+            )}
+          >
+            <a href="/invite/details">
+              <div className="font-semibold underline underline-offset-4">
+                1.10.2023
+              </div>
+            </a>
           </div>
-        </a>
+        </div>
       </div>
     </div>
   );
