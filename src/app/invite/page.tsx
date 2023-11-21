@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import "./landing.css";
 import Timer from "./timer";
+import Hydrated from "@/components/Hydrated";
 
 const marley = localFont({
   src: "../../../public/fonts/marley/ttf/marley-marley-regular-lovely-script-400.ttf",
@@ -53,7 +54,7 @@ function Invite() {
           layout="fill"
           objectFit="cover"
           className={loaded ? "zoom-in" : "not-zoom-in"}
-          style={{ filter: "opacity(0.9)" }}
+          style={{ filter: "opacity(0.8)" }}
           onLoad={handleOnLoad}
         />
       </div>
@@ -73,9 +74,9 @@ function Invite() {
         <div></div>
         <div className="text-center flex flex-col items-center justify-center">
           <div
-            style={{ textShadow: "1px 1px 2px black" }}
+            style={{ textShadow: "0.5px 0.5px 2px black" }}
             className={classNames(
-              "text-5xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-xl",
+              "text-6xl md:text-7xl lg:text-8xl drop-shadow-xl",
               helostar.className
             )}
           >
@@ -120,11 +121,19 @@ function Invite() {
             </a>
           </div>
           <div>
-            <Timer targetDate={targetDate} />
+            <HydratedTimer />
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function HydratedTimer() {
+  return (
+    <Hydrated loader={false}>
+      <Timer targetDate={targetDate} />
+    </Hydrated>
   );
 }
 
