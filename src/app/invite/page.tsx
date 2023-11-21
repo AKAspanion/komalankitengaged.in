@@ -40,9 +40,13 @@ function Invite() {
   }, [searchParams]);
 
   return (
-    <div className={classNames("relative bg-slate-50 text-sm text-black")}>
-      <div className="absolute bg-slate-50 top-0 w-screen h-[100svh] overflow-hidden">
-        <img
+    <div
+      className={classNames(
+        "relative us-img bg-slate-50 h-[100svh] text-sm text-black"
+      )}
+    >
+      <div className="us-img absolute top-0 w-[100vw] h-[100svh] overflow-hidden">
+        {/* <img
           alt="bg"
           src="/us.jpeg"
           className={loaded ? "zoom-in" : "not-zoom-in"}
@@ -53,7 +57,7 @@ function Invite() {
             objectFit: "cover",
           }}
           onLoad={handleOnLoad}
-        />
+        /> */}
       </div>
 
       <div className="z-10 w-screen absolute text-center h-screen flex flex-col items-center justify-between gap-16 p-8">

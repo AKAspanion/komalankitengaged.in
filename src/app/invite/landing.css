@@ -1,3 +1,9 @@
+.us-img {
+  background-image: url("/us.jpeg");
+  background-position: center center;
+  background-size: cover;
+}
+
 .not-zoom-in {
   transform: scale(1.05, 1.05);
 }
