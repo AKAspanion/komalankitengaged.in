@@ -46,11 +46,25 @@ function Invite() {
     <div
       className={classNames("relative bg-slate-50 text-sm text-black h-screen")}
     >
+      <div className="absolute font-light text-[10px] md:text-[12px] flex justify-between w-screen uppercase z-20 p-6 md:p-12">
+        <a href="/invite/details">
+          <div className="underline underline-offset-4">Where</div>
+        </a>
+        <div className="underline underline-offset-4">
+          <a
+            href={`/invite/rsvp?id=${
+              searchParams?.get("rsvp") || ""
+            }&answer=yes`}
+          >
+            RSVP
+          </a>
+        </div>
+      </div>
       <div className="absolute hidden sm:block bg-slate-50 top-0 w-screen h-screen">
         <Image
           quality={100}
           alt="bg"
-          src="/us.jpeg"
+          src="/us.webp"
           layout="fill"
           objectFit="cover"
           className={loaded ? "zoom-in" : "not-zoom-in"}
@@ -62,7 +76,7 @@ function Invite() {
         <Image
           quality={100}
           alt="bg"
-          src="/us-sm.jpeg"
+          src="/us-sm.webp"
           layout="fill"
           objectFit="cover"
           className={loaded ? "zoom-in" : "not-zoom-in"}
@@ -96,12 +110,20 @@ function Invite() {
             <div className="m-6 tracking-wide font-medium rounded bg-opacity-20 bg-gray-900 p-4">
               <div>Will you be attending?</div>
               <div className="pt-2 flex justify-between">
-                <a href={`/invite/rsvp?id=${searchParams?.get("rsvp") || ""}`}>
+                <a
+                  href={`/invite/rsvp?id=${
+                    searchParams?.get("rsvp") || ""
+                  }&answer=yes`}
+                >
                   <button className="border-2 border-black px-2 py-1">
                     <div>Yes</div>
                   </button>
                 </a>
-                <a href={`/invite/rsvp?id=${searchParams?.get("rsvp") || ""}`}>
+                <a
+                  href={`/invite/rsvp?id=${
+                    searchParams?.get("rsvp") || ""
+                  }&answer=no`}
+                >
                   <button className="border-2 border-black px-2 py-1">
                     <div>No</div>
                   </button>
