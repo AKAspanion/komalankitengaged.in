@@ -20,9 +20,11 @@ const helostar = localFont({
   variable: "--font-helostar",
 });
 
-const targetDate = new Date("12.01.2023 21:00").getTime();
+const currentDate = new Date().getTime();
+const targetDate = new Date("12.01.2023 19:00").getTime();
 
 function Invite() {
+  const [datePassed] = useState(targetDate < currentDate);
   const [loaded, setLoaded] = useState(false);
   const [showRSVP, setShowRSVP] = useState(false);
 
@@ -46,20 +48,22 @@ function Invite() {
     <div
       className={classNames("relative bg-slate-50 text-sm text-black h-screen")}
     >
-      <div className="absolute font-light text-[10px] md:text-[12px] flex justify-between w-screen uppercase z-20 p-6 md:p-12">
-        <a href="/invite/details">
-          <div className="underline underline-offset-4">Where</div>
-        </a>
-        <div className="underline underline-offset-4">
-          <a
-            href={`/invite/rsvp?id=${
-              searchParams?.get("rsvp") || ""
-            }&answer=yes`}
-          >
-            RSVP
+      {datePassed ? null : (
+        <div className="absolute font-light text-[10px] md:text-[12px] flex justify-between w-screen uppercase z-20 p-6 md:p-12">
+          <a href="/invite/details">
+            <div className="underline underline-offset-4">Where</div>
           </a>
+          <div className="underline underline-offset-4">
+            <a
+              href={`/invite/rsvp?id=${
+                searchParams?.get("rsvp") || ""
+              }&answer=yes`}
+            >
+              RSVP
+            </a>
+          </div>
         </div>
-      </div>
+      )}
       <div className="absolute hidden sm:block bg-slate-50 top-0 w-screen h-screen">
         <Image
           quality={100}
@@ -102,11 +106,11 @@ function Invite() {
               marley.className
             )}
           >
-            are getting engaged!
+            {datePassed ? "got" : "are getting"} engaged!
           </p>
         </div>
         <div className="text-center flex flex-col items-center justify-center">
-          {showRSVP ? (
+          {!datePassed && showRSVP ? (
             <div className="m-6 tracking-wide font-medium rounded bg-opacity-20 bg-gray-900 p-4">
               <div>Will you be attending?</div>
               <div className="pt-2 flex justify-between">
@@ -136,7 +140,7 @@ function Invite() {
               "leading-6 tracking-widest px-4 py-1 rounded w-fit"
             )}
           >
-            <a href="/invite/details">
+            <a href={datePassed ? undefined : "/invite/details"}>
               <div className="font-semibold uppercase underline underline-offset-8 text-[12px]">
                 01.10.2023
               </div>
@@ -145,9 +149,7 @@ function Invite() {
               </div>
             </a>
           </div>
-          <div>
-            <HydratedTimer />
-          </div>
+          <div>{datePassed ? null : <HydratedTimer />}</div>
         </div>
       </div>
     </div>
