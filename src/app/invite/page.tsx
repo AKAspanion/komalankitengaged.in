@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import "./landing.css";
 import Timer from "./timer";
 import Hydrated from "@/components/Hydrated";
+import axiosInstance from "@/lib/axios";
+import { RSVPType } from "@/schema/guest";
 
 const marley = localFont({
   src: "../../../public/fonts/marley/ttf/marley-marley-regular-lovely-script-400.ttf",
@@ -32,6 +34,19 @@ function Invite() {
     setLoaded(true);
   };
 
+  const handleRSVPCheck = async (id: string) => {
+    try {
+      if (id) {
+        const { data } = await axiosInstance.get<AppAPIRespose<RSVPType>>(
+          `/api/guest/${id}/rsvp`
+        );
+        if (data?.data === undefined) {
+          setShowRSVP(true);
+        }
+      }
+    } catch (error) {}
+  };
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -39,7 +54,7 @@ function Invite() {
       const rsvp = searchParams.get("rsvp");
 
       if (rsvp) {
-        setShowRSVP(true);
+        handleRSVPCheck(rsvp);
       }
     }
   }, [searchParams]);
@@ -59,7 +74,7 @@ function Invite() {
             <a
               href={`/invite/rsvp?id=${
                 searchParams?.get("rsvp") || ""
-              }&answer=yes`}
+              }`}
             >
               RSVP
             </a>
@@ -113,25 +128,16 @@ function Invite() {
         </div>
         <div className="text-center flex flex-col items-center justify-center">
           {!datePassed && showRSVP ? (
-            <div className="m-6 tracking-wide font-medium rounded bg-opacity-20 bg-gray-900 p-4">
-              <div>Will you be attending?</div>
-              <div className="pt-2 flex justify-between">
+            <div className="m-4 tracking-wide font-medium rounded bg-opacity-60 text-white bg-gray-900 p-3 text-[12px]">
+              <div>Are you attending?</div>
+              <div className="pt-2 flex justify-center">
                 <a
                   href={`/invite/rsvp?id=${
                     searchParams?.get("rsvp") || ""
-                  }&answer=yes`}
+                  }`}
                 >
-                  <button className="border-2 border-black px-2 py-1">
-                    <div>Yes</div>
-                  </button>
-                </a>
-                <a
-                  href={`/invite/rsvp?id=${
-                    searchParams?.get("rsvp") || ""
-                  }&answer=no`}
-                >
-                  <button className="border-2 border-black px-2 py-1">
-                    <div>No</div>
+                  <button className="border border-white px-2">
+                    <div>RSVP</div>
                   </button>
                 </a>
               </div>

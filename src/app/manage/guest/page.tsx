@@ -6,13 +6,21 @@ import Hydrated from "@/components/Hydrated";
 import NoContent from "@/components/NoContent";
 import useGuests from "@/hooks/useGuests";
 import useRooms from "@/hooks/useRooms";
-import { CompleteGuest, Guest } from "@/schema/guest";
+import { CompleteGuest } from "@/schema/guest";
 import { Room } from "@/schema/room";
 import { useGuestStore } from "@/store/guest";
 import { HomeIcon } from "@heroicons/react/20/solid";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  CheckCircleIcon,
+  CheckIcon,
+  LinkIcon,
+  PencilIcon,
+  TrashIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 function Home() {
   const { guests, loading } = useGuests();
@@ -38,6 +46,7 @@ function Home() {
               <th>Phone No</th>
               <th>Guest Side</th>
               <th>Room</th>
+              <th>RSVP</th>
             </tr>
           </thead>
           <tbody>
@@ -65,6 +74,15 @@ function Home() {
                     >
                       {guest?.roomData?.type} - {guest?.roomData?.name}
                     </a>
+                  </td>
+                  <td>
+                    {guest?.rsvp === "yes" ? (
+                      <CheckCircleIcon className="w-4 h-4 text-success" />
+                    ) : guest?.rsvp === "no" ? (
+                      <XCircleIcon className="w-4 h-4 text-error" />
+                    ) : (
+                      "-"
+                    )}
                   </td>
                   <td>
                     <GuestActions guest={guest} />
@@ -158,8 +176,19 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
   const editLoading =
     updateGuestRoomLoading[guest?._id] || removeGuestLoading[guest?._id];
 
+  const handleInviteCopy = () => {
+    const link = `${window.location.origin}/invite?rsvp=${guest?._id || ""}`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(() => {
+        toast.success("Invite link copied to clipboard");
+      });
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center w-16 gap-2">
+    <div className="flex items-center justify-center w-24 gap-2">
+      <LinkIcon className="w-3 h-4 cursor-pointer" onClick={handleInviteCopy} />
       {editLoading ? (
         <PencilIcon className="w-3 h-4 text-gray-500" />
       ) : (

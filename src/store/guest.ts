@@ -1,4 +1,4 @@
-import { CompleteGuest, Guest, GuestBody } from "@/schema/guest";
+import { CompleteGuest, Guest, GuestBody, RSVPType } from "@/schema/guest";
 import { create } from "zustand";
 import axiosInstance from "@/lib/axios";
 import { getErrorMessage } from "@/utils/error";
@@ -10,8 +10,36 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
   guestsLoading: false,
   addGuestLoading: false,
   updateGuestLoading: false,
+  setGuestRSVPLoading: false,
   removeGuestLoading: {},
   updateGuestRoomLoading: {},
+  guestDataLoading: {},
+  guestData: {},
+  setGuest: async (id: string) => {
+    try {
+      const loading = get().guestDataLoading;
+      if (!loading[id]) {
+        set((s) => ({
+          guestDataLoading: { ...s.guestDataLoading, [id]: true },
+        }));
+        const { data } = await axiosInstance.get<AppAPIRespose<CompleteGuest>>(
+          "/api/guest/" + id
+        );
+
+        set((s) => ({
+          guestData: { ...s.guestData, [id]: data.data },
+          guestDataLoading: { ...s.guestDataLoading, [id]: false },
+        }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      set((s) => ({
+        guestDataLoading: { ...s.guestDataLoading, [id]: false },
+      }));
+      return false;
+    }
+  },
   setGuests: async () => {
     try {
       const loading = get().guestsLoading;
@@ -149,6 +177,23 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
       return false;
     }
   },
+  setGuestRSVP: async (id, rsvp) => {
+    try {
+      const loading = get().setGuestRSVPLoading;
+      if (!loading) {
+        set(() => ({ setGuestRSVPLoading: true }));
+        await axiosInstance.put(`/api/guest/${id}/rsvp`, { rsvp });
+
+        set(() => ({ setGuestRSVPLoading: false }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      set(() => ({ setGuestRSVPLoading: false }));
+      toast.error(getErrorMessage(error));
+      return false;
+    }
+  },
 }));
 
 type GuestStore = {
@@ -156,6 +201,7 @@ type GuestStore = {
   guestsLoading: boolean;
   addGuestLoading: boolean;
   updateGuestLoading: boolean;
+  setGuestRSVPLoading: boolean;
   removeGuestLoading: Record<string, boolean>;
   updateGuestRoomLoading: Record<string, boolean>;
   addGuest: (guest: GuestBody) => Promise<boolean>;
@@ -171,4 +217,8 @@ type GuestStore = {
     room: Room,
     prevRoom?: string
   ) => Promise<boolean>;
+  guestDataLoading: Record<string, boolean>;
+  guestData: Record<string, CompleteGuest>;
+  setGuest: (id: string) => Promise<boolean>;
+  setGuestRSVP: (id: string, rsvp: RSVPType) => Promise<boolean>;
 };

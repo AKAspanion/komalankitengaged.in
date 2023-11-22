@@ -142,7 +142,7 @@ export default async function handler(
   }
 }
 
-const getGuestByID = async (req: NextApiRequest) => {
+export const getGuestByID = async (req: NextApiRequest) => {
   const {
     query: { id = "" },
   } = req;
