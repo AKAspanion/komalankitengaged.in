@@ -54,7 +54,7 @@ function Invite() {
           layout="fill"
           objectFit="cover"
           className={loaded ? "zoom-in" : "not-zoom-in"}
-          style={{ filter: "opacity(0.8)" }}
+          style={{ filter: "opacity(0.7)" }}
           onLoad={handleOnLoad}
         />
       </div>
@@ -76,7 +76,7 @@ function Invite() {
           <div
             style={{ textShadow: "0.5px 0.5px 2px black" }}
             className={classNames(
-              "text-6xl md:text-7xl lg:text-8xl drop-shadow-xl",
+              "text-7xl md:text-8xl drop-shadow-xl",
               helostar.className
             )}
           >
@@ -84,7 +84,7 @@ function Invite() {
           </div>
           <p
             className={classNames(
-              "text-2xl md:text-3xl rounded w-fit",
+              "text-4xl md:text-5xl rounded w-fit",
               marley.className
             )}
           >
@@ -115,8 +115,11 @@ function Invite() {
             )}
           >
             <a href="/invite/details">
-              <div className="font-semibold underline underline-offset-4">
-                1.10.2023
+              <div className="font-semibold uppercase underline underline-offset-8 text-[12px]">
+                01.10.2023
+              </div>
+              <div className="font-semibold text-[8px] uppercase">
+                Jalsaghar, Shakuntala Park, Kolkata
               </div>
             </a>
           </div>

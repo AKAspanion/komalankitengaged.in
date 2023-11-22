@@ -36,7 +36,11 @@ const ShowCounter = ({
   seconds: number;
 }) => {
   return (
-    <div className={"flex gap-1 pt-4 font-semibold tracking-wide"}>
+    <div
+      className={
+        "flex gap-1 pt-4 font-semibold tracking-wide uppercase text-[10px]"
+      }
+    >
       <DateTimeDisplay value={days} type={"Days"} />
       <p>:</p>
       <DateTimeDisplay value={hours} type={"Hours"} />
