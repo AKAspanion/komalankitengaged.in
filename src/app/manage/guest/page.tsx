@@ -12,7 +12,7 @@ import { useGuestStore } from "@/store/guest";
 import { HomeIcon } from "@heroicons/react/20/solid";
 import {
   CheckCircleIcon,
-  CheckIcon,
+  EnvelopeIcon,
   LinkIcon,
   PencilIcon,
   TrashIcon,
@@ -177,7 +177,9 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
     updateGuestRoomLoading[guest?._id] || removeGuestLoading[guest?._id];
 
   const handleInviteCopy = () => {
-    const link = `${window.location.origin}/invite?rsvp=${guest?._id || ""}`;
+    const link = `${window.location.origin}/invite/details?id=${
+      guest?._id || ""
+    }`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(link).then(() => {
@@ -186,8 +188,22 @@ const GuestActions = ({ guest }: { guest: CompleteGuest }) => {
     }
   };
 
+  const handleRSVPInviteCopy = () => {
+    const link = `${window.location.origin}/invite?id=${guest?._id || ""}`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(() => {
+        toast.success("RSVP invite link copied to clipboard");
+      });
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center w-24 gap-2">
+    <div className="flex items-center justify-center w-28 gap-2">
+      <EnvelopeIcon
+        className="w-4 h-4 cursor-pointer"
+        onClick={handleRSVPInviteCopy}
+      />
       <LinkIcon className="w-3 h-4 cursor-pointer" onClick={handleInviteCopy} />
       {editLoading ? (
         <PencilIcon className="w-3 h-4 text-gray-500" />

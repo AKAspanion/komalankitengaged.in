@@ -12,7 +12,6 @@ export default async function handler(
   const {
     query: { id = "" },
   } = _req;
-  const query = { _id: new ObjectId(id.toString()) };
 
   if (!(await isAuthenticated(_req))) {
     return res.status(401).json({ data: { message: `Unauthorized` } });

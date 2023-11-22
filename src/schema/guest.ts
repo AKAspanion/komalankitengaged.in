@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { Room } from "./room";
 
 const phoneRegex = new RegExp(
@@ -15,6 +15,7 @@ export const GuestSchema = z.object({
   room: z.optional(z.string()),
   side: GuestSideSchema,
   rsvp: RSVPTypeSchema,
+  rsvpForm: z.optional(z.boolean()),
 });
 
 declare type GuestDocument = { _id: string; createdAt: string };

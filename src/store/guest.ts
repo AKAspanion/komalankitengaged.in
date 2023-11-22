@@ -65,10 +65,13 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
       const loading = get().addGuestLoading;
       if (!loading) {
         set(() => ({ addGuestLoading: true }));
-        await axiosInstance.post("/api/guest", newGuest);
+        const { data } = await axiosInstance.post<AppAPIRespose<CompleteGuest>>(
+          "/api/guest",
+          newGuest
+        );
 
         set(() => ({ addGuestLoading: false }));
-        return true;
+        return data?.data;
       }
       return false;
     } catch (error) {
@@ -204,7 +207,7 @@ type GuestStore = {
   setGuestRSVPLoading: boolean;
   removeGuestLoading: Record<string, boolean>;
   updateGuestRoomLoading: Record<string, boolean>;
-  addGuest: (guest: GuestBody) => Promise<boolean>;
+  addGuest: (guest: GuestBody) => Promise<boolean | CompleteGuest>;
   updateGuest: (
     id: string,
     guest: GuestBody,

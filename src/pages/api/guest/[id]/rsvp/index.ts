@@ -37,7 +37,6 @@ export default async function handler(
       const rsvp = bodyObject.rsvp;
 
       const db = await getDB();
-      console.log(query);
 
       const promises = [
         db.collection("guests").updateOne(query, { $set: { rsvp } }),

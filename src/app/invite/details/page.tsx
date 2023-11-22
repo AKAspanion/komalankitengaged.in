@@ -1,8 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 
 import FlowerBackground from "@/components/FlowerBackground";
+import { getIdFromUrlAndLocalStorage } from "@/utils/validate";
 import classNames from "classnames";
 import localFont from "next/font/local";
+import { useSearchParams } from "next/navigation";
 
 const helostar = localFont({
   src: "../../../../public/fonts/helostar/ttf/helostar-helostar-400.ttf",
@@ -10,6 +13,10 @@ const helostar = localFont({
 });
 
 function Details() {
+  const searchParams = useSearchParams();
+
+  const urlId = getIdFromUrlAndLocalStorage(searchParams);
+
   return (
     <FlowerBackground>
       <div className="flex flex-col gap-12">
@@ -37,6 +44,14 @@ function Details() {
           >
             <div>JALSAGHAR, SHAKUNTALA PARK, KOLKATA </div>
           </a>
+          <div className="underline underline-offset-4 pt-8">
+            {/* <a href={`/invite/rsvp?id=${urlId}`}>RSVP</a> */}
+            <a href={`/invite/rsvp?id=${urlId}`}>
+              <button className="border border-black px-2 py-1">
+                <div>RSVP</div>
+              </button>
+            </a>
+          </div>
         </div>
       </div>
     </FlowerBackground>

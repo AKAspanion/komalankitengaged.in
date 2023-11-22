@@ -59,6 +59,11 @@ export default async function handler(
         .collection("guests")
         .aggregate<Guest>([
           {
+            $match: {
+              rsvpForm: { $ne: true },
+            },
+          },
+          {
             $lookup: {
               from: "rooms",
               localField: "room",

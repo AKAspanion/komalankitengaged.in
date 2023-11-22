@@ -12,6 +12,7 @@ import Timer from "./timer";
 import Hydrated from "@/components/Hydrated";
 import axiosInstance from "@/lib/axios";
 import { RSVPType } from "@/schema/guest";
+import { getIdFromUrlAndLocalStorage } from "@/utils/validate";
 
 const marley = localFont({
   src: "../../../public/fonts/marley/ttf/marley-marley-regular-lovely-script-400.ttf",
@@ -51,13 +52,15 @@ function Invite() {
 
   useEffect(() => {
     if (searchParams) {
-      const rsvp = searchParams.get("rsvp");
+      const rsvp =getIdFromUrlAndLocalStorage(searchParams);
 
       if (rsvp) {
         handleRSVPCheck(rsvp);
       }
     }
   }, [searchParams]);
+
+  const urlId = getIdFromUrlAndLocalStorage(searchParams);
 
   return (
     <div
@@ -67,17 +70,11 @@ function Invite() {
     >
       {datePassed ? null : (
         <div className="absolute font-light text-[10px] md:text-[12px] flex justify-between w-screen uppercase z-20 p-6 md:p-12">
-          <a href="/invite/details">
+          <a href={`/invite/details?id=${urlId}`}>
             <div className="underline underline-offset-4">Where</div>
           </a>
           <div className="underline underline-offset-4">
-            <a
-              href={`/invite/rsvp?id=${
-                searchParams?.get("rsvp") || ""
-              }`}
-            >
-              RSVP
-            </a>
+            <a href={`/invite/rsvp?id=${urlId}`}>RSVP</a>
           </div>
         </div>
       )}
@@ -131,11 +128,7 @@ function Invite() {
             <div className="m-4 tracking-wide font-medium rounded bg-opacity-60 text-white bg-gray-900 p-3 text-[12px]">
               <div>Are you attending?</div>
               <div className="pt-2 flex justify-center">
-                <a
-                  href={`/invite/rsvp?id=${
-                    searchParams?.get("rsvp") || ""
-                  }`}
-                >
+                <a href={`/invite/rsvp?id=${urlId}`}>
                   <button className="border border-white px-2">
                     <div>RSVP</div>
                   </button>
@@ -148,7 +141,7 @@ function Invite() {
               "leading-6 tracking-widest px-4 py-1 rounded w-fit"
             )}
           >
-            <a href={datePassed ? undefined : "/invite/details"}>
+            <a href={datePassed ? undefined : `/invite/details?id=${urlId}`}>
               <div className="font-semibold uppercase underline underline-offset-8 text-[12px]">
                 01.10.2023
               </div>
