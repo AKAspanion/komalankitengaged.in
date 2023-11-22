@@ -46,7 +46,9 @@ function Invite() {
 
   return (
     <div
-      className={classNames("relative bg-slate-50 text-sm text-black h-screen")}
+      className={classNames(
+        "relative bg-slate-50 text-sm text-black h-[100svh]"
+      )}
     >
       {datePassed ? null : (
         <div className="absolute font-light text-[10px] md:text-[12px] flex justify-between w-screen uppercase z-20 p-6 md:p-12">
@@ -64,7 +66,7 @@ function Invite() {
           </div>
         </div>
       )}
-      <div className="absolute hidden sm:block bg-slate-50 top-0 w-screen h-screen">
+      <div className="absolute hidden sm:block bg-slate-50 top-0 w-screen h-[100svh]">
         <Image
           quality={100}
           alt="bg"
@@ -76,7 +78,7 @@ function Invite() {
           onLoad={handleOnLoad}
         />
       </div>
-      <div className="absolute sm:hidden bg-slate-50 top-0 w-screen h-screen">
+      <div className="absolute sm:hidden bg-slate-50 top-0 w-screen h-[100svh]">
         <Image
           quality={100}
           alt="bg"
@@ -88,7 +90,7 @@ function Invite() {
           onLoad={handleOnLoad}
         />
       </div>
-      <div className="z-10 w-screen absolute text-center h-screen flex flex-col items-center justify-between gap-16 p-16">
+      <div className="z-10 w-screen absolute text-center h-[100svh] flex flex-col items-center justify-between gap-16 p-16">
         <div></div>
         <div className="text-center flex flex-col items-center justify-center">
           <div

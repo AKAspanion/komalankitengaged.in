@@ -10,8 +10,8 @@ const helostar = localFont({
 
 function Details() {
   return (
-    <div className="relative w-screen h-screen bg-white text-black text-xs">
-      <div className="absolute z-20 w-screen h-screen flex items-center justify-center uppercase text-center">
+    <div className="relative w-screen h-[100svh] bg-white text-black text-xs">
+      <div className="absolute z-20 w-screen h-[100svh] flex items-center justify-center uppercase text-center">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-1 font-light text-[12px]">
             <div>please join us for</div>
@@ -41,22 +41,22 @@ function Details() {
         </div>
       </div>
       <div className="grid grid-cols-2">
-        <div className="w-[50vw] h-[50vh] relative">
+        <div className="w-[50vw] h-[50svh] relative">
           <div className="absolute top-0 left-0 z-10">
             <img className="scale-y-[-1]" alt="bg" src={"/frame-bg.webp"} />
           </div>
         </div>
-        <div className="w-[50vw] h-[50vh] relative">
+        <div className="w-[50vw] h-[50svh] relative">
           <div className="absolute top-0 right-0">
             <img className="scale-x-[-1]" alt="frame" src={"/frame.webp"} />
           </div>
         </div>
-        <div className="w-[50vw] h-[50vh] relative">
+        <div className="w-[50vw] h-[50svh] relative">
           <div className="absolute bottom-0 left-0">
             <img className="scale-y-[-1]" alt="frame" src={"/frame.webp"} />
           </div>
         </div>
-        <div className="w-[50vw] h-[50vh] relative">
+        <div className="w-[50vw] h-[50svh] relative">
           <div className="absolute bottom-0 right-0 z-10">
             <img className="scale-x-[-1]" alt="bg" src={"/frame-bg.webp"} />
           </div>
