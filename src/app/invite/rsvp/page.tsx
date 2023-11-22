@@ -45,6 +45,8 @@ const RSVP: FC<RSVPProps> = ({}) => {
       if (res) {
         setAnswer(response);
         toast.success("RSVP added successfully");
+        router.push(`/invite/rsvp?id=${gid}`);
+        localStorage.setItem("userId", `${gid}`);
       }
     }
   };
