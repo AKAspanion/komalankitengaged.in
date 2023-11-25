@@ -135,7 +135,7 @@ const RSVP: FC<RSVPProps> = ({}) => {
               {addRSVPGuestLoading ? (
                 <div className="loading loading-spinner"></div>
               ) : (
-                "Submit"
+                "Yes"
               )}
             </button>
           </form>
