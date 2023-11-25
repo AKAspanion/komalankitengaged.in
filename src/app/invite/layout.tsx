@@ -3,6 +3,16 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Komal and Ankit's Engagement",
   description: "Komal and Ankit are getting engaged on 01.12.2023",
+  openGraph: {
+    title: "Komal and Ankit's Engagement",
+    description: "Komal and Ankit are getting engaged on 01.12.2023",
+    images: "https://www.komalankitengaged.in/og.webp",
+  },
+  twitter: {
+    title: "Komal and Ankit's Engagement",
+    description: "Komal and Ankit are getting engaged on 01.12.2023",
+    images: "https://www.komalankitengaged.in/og.webp",
+  },
 };
 
 export default function RootLayout({
