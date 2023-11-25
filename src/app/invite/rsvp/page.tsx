@@ -25,8 +25,10 @@ const RSVP: FC<RSVPProps> = ({}) => {
   const [guestID, setId] = useState("");
   const searchParams = useSearchParams();
 
-  const addGuest = useGuestStore((state) => state.addGuest);
-  const addGuestLoading = useGuestStore((state) => state.addGuestLoading);
+  const addRSVPGuest = useGuestStore((state) => state.addRSVPGuest);
+  const addRSVPGuestLoading = useGuestStore(
+    (state) => state.addRSVPGuestLoading
+  );
   const setGuestRSVP = useGuestStore((s) => s.setGuestRSVP);
   const setGuestRSVPLoading = useGuestStore((s) => s.setGuestRSVPLoading);
 
@@ -52,7 +54,7 @@ const RSVP: FC<RSVPProps> = ({}) => {
   };
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
-    if (addGuestLoading) return;
+    if (addRSVPGuestLoading) return;
     event.preventDefault();
 
     try {
@@ -67,7 +69,7 @@ const RSVP: FC<RSVPProps> = ({}) => {
 
       GuestSchema.parse(body);
 
-      const success = await addGuest(body);
+      const success = await addRSVPGuest(body);
       if (success) {
         toast.success("RSVP added succesfully");
 
@@ -130,7 +132,7 @@ const RSVP: FC<RSVPProps> = ({}) => {
               type="submit"
               className="border border-black bg-white p-3 uppercase"
             >
-              {addGuestLoading ? (
+              {addRSVPGuestLoading ? (
                 <div className="loading loading-spinner"></div>
               ) : (
                 "Submit"

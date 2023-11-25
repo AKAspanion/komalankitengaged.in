@@ -8,7 +8,10 @@ import { Room } from "@/schema/room";
 export const useGuestStore = create<GuestStore>((set, get) => ({
   guests: undefined,
   guestsLoading: false,
+  rsvpGuests: undefined,
+  rsvpGuestsLoading: false,
   addGuestLoading: false,
+  addRSVPGuestLoading: false,
   updateGuestLoading: false,
   setGuestRSVPLoading: false,
   removeGuestLoading: {},
@@ -58,6 +61,24 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
       return false;
     }
   },
+  setRSVPGuests: async () => {
+    try {
+      const loading = get().rsvpGuestsLoading;
+      if (!loading) {
+        set(() => ({ rsvpGuestsLoading: true }));
+        const { data } = await axiosInstance.get<
+          AppAPIRespose<CompleteGuest[]>
+        >("/api/guest/rsvp");
+
+        set(() => ({ rsvpGuests: [...data.data], rsvpGuestsLoading: false }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      set(() => ({ rsvpGuests: [], rsvpGuestsLoading: false }));
+      return false;
+    }
+  },
   addGuest: async (guest) => {
     try {
       const newGuest = { ...guest };
@@ -76,6 +97,28 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
       return false;
     } catch (error) {
       set(() => ({ guestsLoading: false }));
+      toast.error(getErrorMessage(error));
+      return false;
+    }
+  },
+  addRSVPGuest: async (guest) => {
+    try {
+      const newGuest = { ...guest };
+
+      const loading = get().addRSVPGuestLoading;
+      if (!loading) {
+        set(() => ({ addRSVPGuestLoading: true }));
+        const { data } = await axiosInstance.post<AppAPIRespose<CompleteGuest>>(
+          "/api/guest/rsvp",
+          newGuest
+        );
+
+        set(() => ({ addRSVPGuestLoading: false }));
+        return data?.data;
+      }
+      return false;
+    } catch (error) {
+      set(() => ({ addRSVPGuestLoading: false }));
       toast.error(getErrorMessage(error));
       return false;
     }
@@ -202,18 +245,23 @@ export const useGuestStore = create<GuestStore>((set, get) => ({
 type GuestStore = {
   guests?: CompleteGuest[];
   guestsLoading: boolean;
+  rsvpGuests?: CompleteGuest[];
+  rsvpGuestsLoading: boolean;
   addGuestLoading: boolean;
+  addRSVPGuestLoading: boolean;
   updateGuestLoading: boolean;
   setGuestRSVPLoading: boolean;
   removeGuestLoading: Record<string, boolean>;
   updateGuestRoomLoading: Record<string, boolean>;
   addGuest: (guest: GuestBody) => Promise<boolean | CompleteGuest>;
+  addRSVPGuest: (guest: GuestBody) => Promise<boolean | CompleteGuest>;
   updateGuest: (
     id: string,
     guest: GuestBody,
     prevRoom?: string
   ) => Promise<boolean>;
   setGuests: () => Promise<boolean>;
+  setRSVPGuests: () => Promise<boolean>;
   removeGuest: (id: string, room?: string) => Promise<boolean>;
   updateGuestRoom: (
     guest: string,

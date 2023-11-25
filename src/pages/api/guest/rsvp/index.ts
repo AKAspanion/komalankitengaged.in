@@ -1,18 +1,43 @@
 import { getDB } from "@/db/mongo";
 import { isAuthenticated } from "@/lib/auth";
-import { Guest } from "@/schema/guest";
+import { Guest, GuestSchema } from "@/schema/guest";
+import { getErrorMessage } from "@/utils/error";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse<AppAPIRespose<Guest[] | Guest | ResponseMessage>>
 ) {
-  if (!(await isAuthenticated(_req))) {
-    return res.status(401).json({ data: { message: `Unauthorized` } });
-  }
-
   switch (_req.method) {
+    case "POST": {
+      try {
+        const db = await getDB();
+        let bodyObject = _req.body;
+
+        GuestSchema.parse(bodyObject);
+
+        const promises: any[] = [
+          await db.collection("guests").insertOne({
+            ...bodyObject,
+            createdAt: new Date(Date.now()),
+          }),
+        ];
+
+        const [newGuest] = await Promise.all(promises);
+
+        return res.status(200).json({
+          data: { ...bodyObject, _id: newGuest.insertedId.toString() },
+        });
+      } catch (error) {
+        return res.status(500).json({
+          data: { message: getErrorMessage(error) },
+        });
+      }
+    }
     case "GET": {
+      if (!(await isAuthenticated(_req))) {
+        return res.status(401).json({ data: { message: `Unauthorized` } });
+      }
       const db = await getDB();
       const guests = await db
         .collection("guests")

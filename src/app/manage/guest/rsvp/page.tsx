@@ -4,7 +4,7 @@ import Authorized from "@/components/Authorized";
 import ContentLoader from "@/components/ContentLoader";
 import Hydrated from "@/components/Hydrated";
 import NoContent from "@/components/NoContent";
-import useGuests from "@/hooks/useGuests";
+import useRSVPGuests from "@/hooks/useRSVPGuests";
 import useRooms from "@/hooks/useRooms";
 import { CompleteGuest } from "@/schema/guest";
 import { Room } from "@/schema/room";
@@ -23,7 +23,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 function Home() {
-  const { guests, loading } = useGuests();
+  const { guests, loading } = useRSVPGuests();
 
   return loading ? (
     <ContentLoader />
@@ -31,15 +31,10 @@ function Home() {
     <NoContent />
   ) : (
     <div className="">
-      <div className="flex justify-between items-center">
-        <div className="px-3">
-          <h1 className="font-medium text-xl pl-1 pb-1">Guests</h1>
-          <div className="text-sm text-gray-400 pl-1 pb-4">
-            List of available guests
-          </div>
-        </div>
-        <div className="text-sm underline-offset-4 underline mr-4">
-          <a href="/manage/guest/rsvp">RSVP Guests</a>
+      <div className="px-3">
+        <h1 className="font-medium text-xl pl-1 pb-1">Guests</h1>
+        <div className="text-sm text-gray-400 pl-1 pb-4">
+          List of available rsvp
         </div>
       </div>
       <div className="overflow-x-auto border-t-[0.5px] border-gray-800">

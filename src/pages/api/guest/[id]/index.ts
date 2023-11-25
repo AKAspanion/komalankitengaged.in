@@ -13,9 +13,6 @@ export default async function handler(
   } = _req;
   const query = { _id: new ObjectId(id.toString()) };
 
-  if (!(await isAuthenticated(_req))) {
-    return res.status(401).json({ data: { message: `Unauthorized` } });
-  }
   switch (_req.method) {
     case "GET": {
       return getGuestByID(_req)
@@ -36,6 +33,10 @@ export default async function handler(
         });
     }
     case "PUT": {
+      if (!(await isAuthenticated(_req))) {
+        return res.status(401).json({ data: { message: `Unauthorized` } });
+      }
+
       if (!(await isAdmin(_req))) {
         return res.status(403).json({
           data: { message: `You are not authorized to do this operation` },
@@ -96,6 +97,10 @@ export default async function handler(
         });
     }
     case "DELETE": {
+      if (!(await isAuthenticated(_req))) {
+        return res.status(401).json({ data: { message: `Unauthorized` } });
+      }
+
       if (!(await isAdmin(_req))) {
         return res.status(403).json({
           data: { message: `You are not authorized to do this operation` },
