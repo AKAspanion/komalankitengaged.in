@@ -32,6 +32,31 @@ export const useRoomStore = create<RoomStore>((set, get) => ({
       return false;
     }
   },
+  setRoomByKey: async (key: string) => {
+    try {
+      const loading = get().roomDataLoading;
+      if (!loading[key]) {
+        set((s) => ({
+          roomDataLoading: { ...s.roomDataLoading, [key]: true },
+        }));
+        const { data } = await axiosInstance.get<AppAPIRespose<CompleteRoom>>(
+          "/api/room/key" + `?key=${key || ""}`
+        );
+
+        set((s) => ({
+          roomData: { ...s.roomData, [key]: data.data },
+          roomDataLoading: { ...s.roomDataLoading, [key]: false },
+        }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      set((s) => ({
+        roomDataLoading: { ...s.roomDataLoading, [key]: false },
+      }));
+      return false;
+    }
+  },
   setRooms: async () => {
     try {
       const loading = get().roomsLoading;
@@ -59,4 +84,5 @@ export type RoomStore = {
   roomData: Record<string, CompleteRoom>;
   setRoom: (id: string) => Promise<boolean>;
   setRooms: () => Promise<boolean>;
+  setRoomByKey: (key: string) => Promise<boolean>;
 };

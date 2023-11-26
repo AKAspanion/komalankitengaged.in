@@ -8,18 +8,14 @@ export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse<AppAPIRespose<Room | ResponseMessage>>
 ) {
-  const {
-    query: { id = "" },
-  } = _req;
-
   switch (_req.method) {
     case "GET": {
-      return getRoomByID(_req)
+      return getRoomByKey(_req)
         .then((room) => {
           return room
             ? res.status(200).json({ data: room })
             : res.status(404).json({
-                data: { message: `Room with id: ${id} not found` },
+                data: { message: `Room not found` },
               });
         })
         .catch((error) => {
@@ -39,12 +35,12 @@ export default async function handler(
   }
 }
 
-const getRoomByID = async (req: NextApiRequest) => {
+const getRoomByKey = async (req: NextApiRequest) => {
   const {
-    query: { id = "" },
+    query: { key = "" },
   } = req;
 
-  const query = { _id: new ObjectId(id.toString()) };
+  const query = { key: String(key || "") };
 
   const db = await getDB();
 

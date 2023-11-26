@@ -1,14 +1,16 @@
 import { useUserStore } from "@/store/user";
 import { FC } from "react";
 import Hydrated from "./Hydrated";
+import useIsAuthenticated from "@/hooks/useIsAuthenticated";
 
 interface AuthorizedProps {
   children: React.ReactNode;
 }
 
 const HyderatedAuthorized: FC<AuthorizedProps> = ({ children }) => {
-  const token = useUserStore((s) => s.token);
-  if (token) {
+  const isAuth = useIsAuthenticated();
+
+  if (isAuth) {
     return <>{children}</>;
   }
 

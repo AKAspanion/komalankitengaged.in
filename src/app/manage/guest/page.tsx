@@ -6,6 +6,7 @@ import Hydrated from "@/components/Hydrated";
 import NoContent from "@/components/NoContent";
 import useGuests from "@/hooks/useGuests";
 import GuestTable from "./guest-table";
+import TitleBox from "@/components/TitleBox";
 
 function Home() {
   const { guests, loading } = useGuests();
@@ -18,10 +19,7 @@ function Home() {
     <div className="">
       <div className="flex justify-between items-center">
         <div className="px-3">
-          <h1 className="font-medium text-xl pl-1 pb-1">Guests</h1>
-          <div className="text-sm text-gray-400 pl-1 pb-4">
-            List of available guests
-          </div>
+          <TitleBox title="Guests" subtitle="List of available guests" />
         </div>
         <div className="text-sm underline-offset-4 underline mr-4">
           <a href="/manage/guest/rsvp">RSVP Guests</a>

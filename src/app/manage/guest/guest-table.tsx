@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import TitleBox from "@/components/TitleBox";
 interface Props {
   guests: CompleteGuest[];
   rsvp?: boolean;
@@ -227,12 +228,7 @@ const RoomModal = ({
       <input type="checkbox" id={id} className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <div className="">
-            <h1 className="font-medium text-xl pl-1 pb-1">Update</h1>
-            <div className="text-sm text-gray-400 pl-1 pb-4">
-              Update room for guest
-            </div>
-          </div>
+          <TitleBox title="Update" subtitle="Update room for guest" />
           {roomLoading ? (
             <div className="loading loading-spinner loading-sm"></div>
           ) : (

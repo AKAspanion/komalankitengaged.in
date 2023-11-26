@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
     const { status } = error?.response || {};
     if (status === 401) {
       ls.set("user-storage", JSON.stringify({ state: {} }));
-      window.location.reload();
+      window.location.replace("/login");
     }
 
     return Promise.reject(error);

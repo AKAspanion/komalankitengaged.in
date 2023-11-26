@@ -7,6 +7,7 @@ import useRooms from "@/hooks/useRooms";
 import ContentLoader from "@/components/ContentLoader";
 import React from "react";
 import NoContent from "@/components/NoContent";
+import TitleBox from "@/components/TitleBox";
 
 function Rooms() {
   const { rooms, hotelRooms, homeRooms, loading } = useRooms();
@@ -18,10 +19,7 @@ function Rooms() {
   ) : (
     <div className="px-4 pb-4 flex flex-col gap-4">
       <div>
-        <h1 className="font-medium text-xl pl-1 pb-1">Rooms</h1>
-        <div className="text-sm text-gray-400 pl-1">
-          List of available rooms
-        </div>
+        <TitleBox title="Rooms" subtitle="List of available rooms" />
       </div>
       {hotelRooms?.length > 0 ? (
         <React.Fragment>

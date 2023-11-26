@@ -4,8 +4,10 @@ import { useEffect } from "react";
 const useRoomDetails = (room?: string) => {
   const setRoom = useRoomStore((s) => s.setRoom);
 
-  const roomData = useRoomStore((s) => (room ? s.roomData[room] : undefined));
-  const roomDataLoading = useRoomStore((s) =>
+  const roomDataById = useRoomStore((s) =>
+    room ? s.roomData[room] : undefined
+  );
+  const roomDataLoadingById = useRoomStore((s) =>
     room ? s.roomDataLoading[room] : false
   );
 
@@ -16,7 +18,7 @@ const useRoomDetails = (room?: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
 
-  return { roomData, roomDataLoading };
+  return { roomDataById, roomDataLoadingById };
 };
 
 export default useRoomDetails;

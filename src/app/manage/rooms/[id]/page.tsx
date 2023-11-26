@@ -2,19 +2,37 @@
 
 import Authorized from "@/components/Authorized";
 import useRoomDetails from "@/hooks/useRoomDetails";
-import React from "react";
-import { useParams } from "next/navigation";
+import React, { useMemo } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import ContentLoader from "@/components/ContentLoader";
 import RoomCard from "@/components/RoomCard";
 import classNames from "classnames";
 import NoContent from "@/components/NoContent";
+import useIsAuthenticated from "@/hooks/useIsAuthenticated";
+import TitleBox from "@/components/TitleBox";
+import Hydrated from "@/components/Hydrated";
+import useRoomDetailsByKey from "@/hooks/useRoomDetailsByKey";
 
 function RoomDetails() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const isAuth = useIsAuthenticated();
 
   const id = (params?.["id"] || "").toString();
 
-  const { roomData, roomDataLoading } = useRoomDetails(id);
+  const { roomDataById, roomDataLoadingById } = useRoomDetails(id);
+  const { roomDataByKey, roomDataLoadingByKey } = useRoomDetailsByKey(
+    searchParams?.get("key") || ""
+  );
+
+  const roomData = useMemo(
+    () => roomDataById || roomDataByKey,
+    [roomDataById, roomDataByKey]
+  );
+  const roomDataLoading = useMemo(
+    () => roomDataLoadingById || roomDataLoadingByKey,
+    [roomDataLoadingById, roomDataLoadingByKey]
+  );
 
   return roomDataLoading ? (
     <ContentLoader />
@@ -24,16 +42,16 @@ function RoomDetails() {
     <div>
       <div className="px-4">
         <div className="pb-1">
-          <h1 className="font-medium text-xl pl-1 pb-1">Room Details</h1>
+          <TitleBox
+            title="Room Details"
+            back={isAuth ? "/manage/rooms" : undefined}
+          />
         </div>
         <div className="max-w-md">
-          <RoomCard room={roomData} />
+          <RoomCard room={roomData} inPage />
         </div>
         <div className="pb-1 mt-4">
-          <h1 className="font-medium text-xl pl-1 pb-1">Guests</h1>
-          <div className="text-sm text-gray-400 pl-1 pb-4">
-            List of guests in this room
-          </div>
+          <TitleBox title="Guests" subtitle="Guests in this room" />
         </div>
       </div>
       {roomData?.guests?.length <= 0 ? (
@@ -45,7 +63,6 @@ function RoomDetails() {
               <th></th>
               <th>Name</th>
               <th>Phone No</th>
-              <th>Guest Side</th>
             </tr>
           </thead>
           <tbody>
@@ -55,17 +72,6 @@ function RoomDetails() {
                   <th>{index + 1}</th>
                   <td>{guest?.name || "-"}</td>
                   <td>{guest?.phoneNo || "-"}</td>
-                  <td>
-                    <div
-                      className={classNames(
-                        "badge",
-                        { "badge-secondary": guest?.side === "Komal" },
-                        { "badge-accent": guest?.side === "Ankit" }
-                      )}
-                    >
-                      {guest?.side || "-"}
-                    </div>
-                  </td>
                 </tr>
               );
             })}
@@ -78,8 +84,8 @@ function RoomDetails() {
 
 export default function Page() {
   return (
-    <Authorized>
+    <Hydrated>
       <RoomDetails />
-    </Authorized>
+    </Hydrated>
   );
 }

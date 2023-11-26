@@ -1,17 +1,32 @@
 import { Room } from "@/schema/room";
+import { LinkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { FC } from "react";
+import toast from "react-hot-toast";
 
 interface RoomCardProps {
   room: Room;
+  inPage?: boolean;
 }
 
-const RoomCard: FC<RoomCardProps> = ({ room }) => {
+const RoomCard: FC<RoomCardProps> = ({ room, inPage }) => {
   const badgeClass = room?.occupied
     ? room?.occupied >= room?.capacity
       ? "badge-error"
       : "badge-warning"
     : "badge-success";
+
+  const handleLinkCopy = () => {
+    const link = `${window.location.origin}/manage/rooms/key?key=${
+      room?.key || ""
+    }`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(() => {
+        toast.success("Room link copied to clipboard");
+      });
+    } 
+  };
 
   return (
     <div
@@ -21,8 +36,16 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
         { "border-accent": room.type === "HOME" }
       )}
     >
-      <div className="flex flex-wrap justify-between items-center gap-3F">
-        <div className="">{room?.name}</div>
+      <div className="flex flex-wrap justify-between items-center gap-3">
+        <div className="flex items-center gap-2">
+          <div>{room?.name}</div>
+          <div className="badge badge-neutral badge-outline">{room?.key}</div>
+          {inPage ? (
+            <div className="cursor-pointer" onClick={handleLinkCopy}>
+              <LinkIcon className="w-3 h-3" />
+            </div>
+          ) : null}
+        </div>
         <div className="text-sm text-gray-400">
           <p
             className={classNames(

@@ -1,6 +1,7 @@
 "use client";
 
 import Authorized from "@/components/Authorized";
+import TitleBox from "@/components/TitleBox";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "next/navigation";
 
@@ -18,11 +19,14 @@ function Profile() {
 
   return (
     <div className="p-4 text-center">
+      <TitleBox title="Profile" back={token ? "/manage" : undefined} />
       <div className="p-6">{user?.email || "-"}</div>
       {token ? (
-        <button className="btn" onClick={handleLogout}>
-          Logout
-        </button>
+        <div>
+          <button className="btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       ) : (
         <a href="/login">
           <button className="btn">Login</button>

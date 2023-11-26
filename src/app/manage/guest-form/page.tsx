@@ -1,6 +1,7 @@
 "use client";
 
 import Authorized from "@/components/Authorized";
+import TitleBox from "@/components/TitleBox";
 import useRooms from "@/hooks/useRooms";
 import { GuestSchema, GuestSide } from "@/schema/guest";
 import { useGuestStore } from "@/store/guest";
@@ -93,9 +94,7 @@ function GuestForm() {
 
   return (
     <div className="px-4 pb-4">
-      <h1 className="font-medium text-xl pl-1 pb-1">
-        {isEdit ? "Update guest" : "Add a guest"}
-      </h1>
+      <TitleBox title={isEdit ? "Update guest" : "Add a guest"} />
       <div className="text-sm text-gray-400 pl-1 pb-4">
         Total rooms present <p className="badge">{rooms?.length}</p>
       </div>
