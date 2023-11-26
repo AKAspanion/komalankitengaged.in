@@ -1,6 +1,6 @@
-import { CompleteGuest } from "@/schema/guest";
+import { CompleteGuest, GuestSide } from "@/schema/guest";
 import classNames from "classnames";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import useRooms from "@/hooks/useRooms";
 import { Room } from "@/schema/room";
 import { useGuestStore } from "@/store/guest";
@@ -20,62 +20,110 @@ interface Props {
   rsvp?: boolean;
 }
 
-const GuestTable: FC<Props> = ({ guests, rsvp }) => {
+const GuestTable: FC<Props> = ({ guests: propGuests, rsvp }) => {
+  const [filter, setFilter] = useState("");
+  const [guestSide, setGuestSide] = useState<GuestSide>();
+
+  const guests = useMemo(() => {
+    return propGuests.filter((i) => {
+      const isGuestType = guestSide ? i?.side === guestSide : true;
+      const isName = i?.name?.toLowerCase().includes(filter.toLowerCase());
+
+      return isGuestType && isName;
+    });
+  }, [filter, guestSide, propGuests]);
+
+  const toggleGuestSide = (newSide: GuestSide) => {
+    if (guestSide === newSide) {
+      setGuestSide(undefined);
+    } else {
+      setGuestSide(newSide);
+    }
+  };
+
   return (
-    <table className="table table-zebra">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Phone No</th>
-          <th>Guest Side</th>
-          <th>Room</th>
-          <th>RSVP</th>
-        </tr>
-      </thead>
-      <tbody>
-        {guests.map((guest, index) => {
-          return (
-            <tr key={guest?._id} className="hover">
-              <th>{index + 1}</th>
-              <td>{guest?.name || "-"}</td>
-              <td>{guest?.phoneNo || "-"}</td>
-              <td>
-                <div
-                  className={classNames(
-                    "badge",
-                    { "badge-secondary": guest?.side === "Komal" },
-                    { "badge-accent": guest?.side === "Ankit" }
+    <>
+      <div className="p-4 flex justify-end items-center gap-4">
+        <div
+          className={classNames("badge badge-secondary cursor-pointer", {
+            "badge-outline": guestSide !== "Komal",
+          })}
+          onClick={() => toggleGuestSide("Komal")}
+        >
+          Komal
+        </div>
+        <div
+          className={classNames("badge badge-accent cursor-pointer", {
+            "badge-outline": guestSide !== "Ankit",
+          })}
+          onClick={() => toggleGuestSide("Ankit")}
+        >
+          Ankit
+        </div>
+        <input
+          type="text"
+          name="filter"
+          placeholder="Filter guests"
+          className="input input-sm input-bordered"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+      </div>
+      <table className="table table-zebra border-t-[0.5px] border-gray-800">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Phone No</th>
+            <th>Guest Side</th>
+            <th>Room</th>
+            <th>RSVP</th>
+          </tr>
+        </thead>
+        <tbody>
+          {guests.map((guest, index) => {
+            return (
+              <tr key={guest?._id} className="hover">
+                <th>{index + 1}</th>
+                <td>{guest?.name || "-"}</td>
+                <td>{guest?.phoneNo || "-"}</td>
+                <td>
+                  <div
+                    className={classNames(
+                      "badge",
+                      { "badge-secondary": guest?.side === "Komal" },
+                      { "badge-accent": guest?.side === "Ankit" }
+                    )}
+                  >
+                    {guest?.side || "-"}
+                  </div>
+                </td>
+                <td>
+                  <a
+                    className="hover:underline underline-offset-4"
+                    href={`/rooms/${guest?.room || ""}`}
+                  >
+                    {guest?.roomData?.type} - {guest?.roomData?.name}
+                  </a>
+                </td>
+                <td>
+                  {guest?.rsvp === "yes" ? (
+                    <CheckCircleIcon className="w-4 h-4 text-success" />
+                  ) : guest?.rsvp === "no" ? (
+                    <XCircleIcon className="w-4 h-4 text-error" />
+                  ) : (
+                    "-"
                   )}
-                >
-                  {guest?.side || "-"}
-                </div>
-              </td>
-              <td>
-                <a
-                  className="hover:underline underline-offset-4"
-                  href={`/rooms/${guest?.room || ""}`}
-                >
-                  {guest?.roomData?.type} - {guest?.roomData?.name}
-                </a>
-              </td>
-              <td>
-                {guest?.rsvp === "yes" ? (
-                  <CheckCircleIcon className="w-4 h-4 text-success" />
-                ) : guest?.rsvp === "no" ? (
-                  <XCircleIcon className="w-4 h-4 text-error" />
-                ) : (
-                  "-"
-                )}
-              </td>
-              <td>
-                <GuestActions guest={guest} />
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                </td>
+                <td>
+                  <GuestActions guest={guest} />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 };
 

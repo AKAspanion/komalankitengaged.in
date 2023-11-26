@@ -17,7 +17,7 @@ export default async function handler(
       const rroms = await db
         .collection("rooms")
         .find<Room>({})
-        .sort({ createdAt: -1 })
+        .sort({ name: 1 })
         .toArray();
       return res.status(200).json({ data: rroms });
     }

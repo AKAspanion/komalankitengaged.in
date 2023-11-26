@@ -60,7 +60,7 @@ const getRoomByID = async (req: NextApiRequest) => {
         const guests = await db
           .collection("guests")
           .find<Guest>({ room: new ObjectId(data?._id) })
-          .sort({ createdAt: -1 })
+          .sort({ name: 1 })
           .toArray();
 
         data.guests = guests;

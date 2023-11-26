@@ -1,16 +1,17 @@
 import { getDB } from "@/db/mongo";
-import { isAuthenticated } from "@/lib/auth";
 import { Room } from "@/schema/room";
 import { NextApiResponse, NextApiRequest } from "next";
 
 import { rooms } from "./rooms";
 
+const notAllowed = true;
+
 export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse<AppAPIRespose<Room[] | ResponseMessage>>
 ) {
-  if (!(await isAuthenticated(_req))) {
-    return res.status(401).json({ data: { message: `Unauthorized` } });
+  if (notAllowed) {
+    return res.status(403).json({ data: { message: `Not allowed` } });
   }
 
   switch (_req.method) {
