@@ -25,7 +25,7 @@ const RoomCard: FC<RoomCardProps> = ({ room, inPage }) => {
       navigator.clipboard.writeText(link).then(() => {
         toast.success("Room link copied to clipboard");
       });
-    } 
+    }
   };
 
   return (
@@ -41,8 +41,10 @@ const RoomCard: FC<RoomCardProps> = ({ room, inPage }) => {
           <div>{room?.name}</div>
           <div className="badge badge-neutral badge-outline">{room?.key}</div>
           {inPage ? (
-            <div className="cursor-pointer" onClick={handleLinkCopy}>
-              <LinkIcon className="w-3 h-3" />
+            <div className="badge badge-neutral badge-outline cursor-pointer">
+              <div className="cursor-pointer" onClick={handleLinkCopy}>
+                <LinkIcon className="w-3 h-3" />
+              </div>
             </div>
           ) : null}
         </div>
