@@ -52,7 +52,7 @@ function Invite() {
 
   useEffect(() => {
     if (searchParams) {
-      const rsvp =getIdFromUrlAndLocalStorage(searchParams);
+      const rsvp = getIdFromUrlAndLocalStorage(searchParams);
 
       if (rsvp) {
         handleRSVPCheck(rsvp);
@@ -143,7 +143,7 @@ function Invite() {
           >
             <a href={datePassed ? undefined : `/invite/details?id=${urlId}`}>
               <div className="font-semibold uppercase underline underline-offset-8 text-[12px]">
-                01.10.2023
+                01.12.2023
               </div>
               <div className="font-semibold text-[8px] uppercase">
                 Jalsaghar, Shakuntala Park, Kolkata
