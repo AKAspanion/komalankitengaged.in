@@ -14,6 +14,10 @@ export default async function handler(
 
   switch (_req.method) {
     case "GET": {
+      if (id === "key") {
+        res.status(404).json({ data: { message: `Room  not found` } });
+      }
+
       return getRoomByID(_req)
         .then((room) => {
           return room

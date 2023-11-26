@@ -57,7 +57,7 @@ function RoomDetails() {
       {roomData?.guests?.length <= 0 ? (
         <NoContent />
       ) : (
-        <table className="table table-zebra border-t-[0.5px] border-gray-800">
+        <table className="table border-t-[0.5px] border-gray-800">
           <thead>
             <tr>
               <th></th>
