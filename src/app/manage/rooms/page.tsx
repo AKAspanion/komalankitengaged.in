@@ -27,7 +27,7 @@ function Rooms() {
         <React.Fragment>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  gap-4">
             {hotelRooms.map((r) => (
-              <a key={r._id} href={`/rooms/${r?._id || ""}/`}>
+              <a key={r._id} href={`/manage/rooms/${r?._id || ""}/`}>
                 <RoomCard room={r} />
               </a>
             ))}
@@ -38,7 +38,7 @@ function Rooms() {
         <React.Fragment>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
             {homeRooms.map((r) => (
-              <a key={r._id} href={`/rooms/${r?._id || ""}/`}>
+              <a key={r._id} href={`/manage/rooms/${r?._id || ""}/`}>
                 <RoomCard room={r} />
               </a>
             ))}

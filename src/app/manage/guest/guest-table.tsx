@@ -101,7 +101,7 @@ const GuestTable: FC<Props> = ({ guests: propGuests, rsvp }) => {
                 <td>
                   <a
                     className="hover:underline underline-offset-4"
-                    href={`/rooms/${guest?.room || ""}`}
+                    href={`/manage/rooms/${guest?.room || ""}`}
                   >
                     {guest?.roomData?.type} - {guest?.roomData?.name}
                   </a>

@@ -7,6 +7,12 @@ interface RoomCardProps {
 }
 
 const RoomCard: FC<RoomCardProps> = ({ room }) => {
+  const badgeClass = room?.occupied
+    ? room?.occupied >= room?.capacity
+      ? "badge-error"
+      : "badge-warning"
+    : "badge-success";
+
   return (
     <div
       className={classNames(
@@ -31,11 +37,13 @@ const RoomCard: FC<RoomCardProps> = ({ room }) => {
       </div>
       <div className="flex flex-wrap items-center gap-3 mt-4">
         <div className="text-sm text-gray-400">
-          Capacity <p className="badge badge-neutral">{room?.capacity}</p>
+          Capacity <p className="badge badge-primary">{room?.capacity}</p>
         </div>
         <div className="text-sm text-gray-400">
           Occupied{" "}
-          <p className="badge badge-neutral">{room?.occupied || "0"}</p>
+          <p className={classNames("badge badge-neutral", badgeClass)}>
+            {room?.occupied || "0"}
+          </p>
         </div>
       </div>
     </div>
